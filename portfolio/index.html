@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오재준 | 웹 개발자 포트폴리오</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    nav { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .section { padding: 80px 0; }
+    footer { background: #222; color: #aaa; padding: 20px 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">오재준</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="section text-center" id="hero" style="margin-top:60px">
+    <div class="container">
+      <h1 class="fw-bold mb-3">백엔드 중심 웹 개발자</h1>
+      <p class="lead">eGovFrame 기반 Spring / Redis / Swagger 등 실무형 백엔드 개발 경험 보유</p>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section bg-white" id="about">
+    <div class="container">
+      <h2 class="fw-bold mb-4">About Me</h2>
+      <p>안녕하세요. 저는 공공·SI 프로젝트 중심으로 Spring Framework 기반의 백엔드 개발을 해왔습니다.<br>
+      Redis, Swagger, MyBatis 등을 활용하여 성능과 유지보수성을 고려한 구조를 설계합니다.</p>
+      <ul>
+        <li>주요 기술: Spring 4.3, eGovFrame, Redis, MyBatis, Swagger</li>
+        <li>DB: MySQL / Oracle</li>
+        <li>Infra: Tomcat, Docker</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section" id="projects">
+    <div class="container">
+      <h2 class="fw-bold mb-4">Projects</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">관리자 시스템</h5>
+              <p class="card-text">Spring Security 기반의 권한 코드별 접근 제어 시스템. Redis 세션 관리 및 Swagger 문서 자동화 적용.</p>
+              <a href="#" class="btn btn-primary">자세히 보기</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">예약 관리 시스템</h5>
+              <p class="card-text">eGovFrame 기반 예약 서비스. 파일 업로드, 사용자 인증, 관리자 승인 프로세스 구현.</p>
+              <a href="#" class="btn btn-primary">자세히 보기</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section bg-white" id="contact">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Contact</h2>
+      <p>📧 Email: <a href="mailto:jaejun.dev@example.com">jaejun.dev@example.com</a></p>
+      <p>💻 GitHub: <a href="https://github.com/yourid" target="_blank">github.com/yourid</a></p>
+    </div>
+  </section>
+
+  <footer class="text-center">
+    <p class="mb-0">© 2025 오재준 | Web Developer Portfolio</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
