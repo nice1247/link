@@ -6,24 +6,25 @@
   <title>오재준 | 웹 개발자 포트폴리오</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background-color: #f5f5f5; color: #333; font-family: 'Arial', sans-serif; }
-    nav { background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    nav .nav-link { color: #555; font-weight: 500; }
-    nav .nav-link:hover { color: #000; }
+    body { background-color: #111; color: #eee; font-family: 'Arial', sans-serif; }
+    nav { background: #111; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    nav .nav-link { color: #ccc; font-weight: 500; }
+    nav .nav-link:hover { color: #00ffff; }
     .section { padding: 80px 0; }
-    .section h2 { font-weight: 700; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 8px; margin-bottom: 30px; }
-    .card { border: none; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.3s; }
+    h2 { font-weight: 700; margin-bottom: 40px; font-size:2.5rem; border-bottom:2px solid #00ffff; display:inline-block; padding-bottom:8px; }
+    .card { background:#222; border:none; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s; color:#eee; }
     .card:hover { transform: translateY(-5px); }
-    .card-title { font-weight: 600; color: #111; }
-    .card-text { color: #555; }
-    footer { background: #222; color: #aaa; padding: 20px 0; }
-    a { text-decoration: none; }
+    .card-title { color:#00ffff; font-weight:600; }
+    .card-text { color:#ccc; }
+    .btn-dark { background:#00ffff; border:none; color:#111; font-weight:600; }
+    .btn-dark:hover { background:#00cccc; }
+    footer { background: #111; color: #777; padding: 20px 0; }
   </style>
 </head>
 <body>
 
   <!-- Header / Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
       <a class="navbar-brand fw-bold" href="#">오재준</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -42,31 +43,39 @@
   <!-- Hero Section -->
   <section class="section text-center" id="hero" style="margin-top:60px;">
     <div class="container">
-      <h1 class="fw-bold mb-3">백엔드 중심 웹 개발자</h1>
-      <p class="lead" style="color: #666;">eGovFrame 기반 Spring / Redis / Swagger 등 실무형 백엔드 개발 경험 보유</p>
+      <h1 class="fw-bold mb-3" style="font-size:3rem;">백엔드 중심 웹 개발자</h1>
+      <p class="lead" style="color: #ccc; font-size:1.2rem; max-width:700px; margin:0 auto;">
+        eGovFrame 기반 Spring / Redis / Swagger 등 실무형 백엔드 개발 경험 보유
+      </p>
     </div>
   </section>
 
   <!-- About Section -->
-  <section class="section bg-white" id="about">
+  <section id="about" class="section text-center">
     <div class="container">
       <h2>About Me</h2>
-      <p>안녕하세요. 저는 공공·SI 프로젝트 중심으로 Spring Framework 기반의 백엔드 개발을 해왔습니다.<br>
-      Redis, Swagger, MyBatis 등을 활용하여 성능과 유지보수성을 고려한 구조를 설계합니다.</p>
-      <ul>
-        <li>주요 기술: Spring 4.3, eGovFrame, Redis, MyBatis, Swagger</li>
-        <li>DB: MySQL / Oracle</li>
-        <li>Infra: Tomcat, Docker</li>
-      </ul>
+      <p style="font-size:1.2rem; line-height:1.8; max-width:700px; margin:0 auto 40px auto; color:#ccc;">
+        안녕하세요. 저는 공공·SI 프로젝트 중심으로 <span style="color:#00ffff; font-weight:600;">Spring Framework</span> 기반의 백엔드 개발을 해왔습니다.<br>
+        Redis, Swagger, MyBatis 등을 활용하여 성능과 유지보수성을 고려한 구조를 설계합니다.
+      </p>
+      <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap;">
+        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
+          <h5 style="color:#00ffff;">주요 기술</h5>
+          <p>Spring, Redis, Swagger, MyBatis</p>
+        </div>
+        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
+          <h5 style="color:#00ffff;">DB / Infra</h5>
+          <p>MySQL, Oracle, Tomcat, Docker</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Projects Section -->
-  <section class="section" id="projects">
+  <section id="projects" class="section">
     <div class="container">
       <h2>Projects</h2>
       <div class="row g-4">
-        <!-- 대표 프로젝트 -->
         <div class="col-md-6">
           <div class="card h-100">
             <div class="card-body">
@@ -86,21 +95,19 @@
           </div>
         </div>
       </div>
-
-      <!-- 나머지 프로젝트 간략 리스트 -->
       <div class="mt-5">
-        <h5>기타 프로젝트</h5>
-        <p>추가 프로젝트: ○○ 시스템, △△ 관리 시스템, □□ 예약 시스템 등 총 16개 프로젝트 수행</p>
+        <h5 style="color:#00ffff;">기타 프로젝트</h5>
+        <p style="color:#ccc;">추가 프로젝트: ○○ 시스템, △△ 관리 시스템, □□ 예약 시스템 등 총 16개 프로젝트 수행</p>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section class="section bg-white" id="contact">
-    <div class="container text-center">
+  <section id="contact" class="section text-center" style="background:#111;">
+    <div class="container">
       <h2>Contact</h2>
-      <p>📧 Email: <a href="mailto:jaejun.dev@example.com">jaejun.dev@example.com</a></p>
-      <p>💻 GitHub: <a href="https://github.com/yourid" target="_blank">github.com/yourid</a></p>
+      <p>📧 Email: <a href="mailto:jaejun.dev@example.com" style="color:#00ffff;">jaejun.dev@example.com</a></p>
+      <p>💻 GitHub: <a href="https://github.com/yourid" target="_blank" style="color:#00ffff;">github.com/yourid</a></p>
     </div>
   </section>
 
