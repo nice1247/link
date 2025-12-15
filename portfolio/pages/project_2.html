@@ -123,21 +123,37 @@
             color: #64B5F6; /* 파란색 - 코드/API 강조 */
         }
         .back-button {
-            display: inline-block;
-            background-color: #4CAF50;
+            position: fixed; /* 요소를 뷰포트 기준으로 고정 */
+            bottom: 30px;    /* 하단에서 30px 위치 */
+            right: 30px;     /* 오른쪽에서 30px 위치 */
+            z-index: 1000;   /* 다른 요소 위에 표시 */
+            
+            /* 디자인 수정 */
+            display: flex; /* 내부 요소를 중앙에 정렬하기 위해 flex 사용 */
+            align-items: center;
+            justify-content: center;
+            
+            width: 50px;     /* 버튼 크기 조정 */
+            height: 50px;
+            background-color: #9C27B0; /* (프로젝트 색상 유지) */
             color: white;
-            padding: 10px 20px;
+            font-size: 1.5em; /* 화살표 크기 */
             text-decoration: none;
-            border-radius: 5px;
-            margin-bottom: 30px;
-            transition: background-color 0.3s;
+            border-radius: 50%; /* 원형 버튼으로 변경 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .back-button:hover {
+            background-color: #7B1FA2;
+            transform: scale(1.1); /* 호버 시 약간 확대 */
         }
     </style>
 </head>
 <body>
 
+    <a href="../..#projects" class="back-button">↩</a>
+
     <div class="container">
-        <a href="../..#projects" class="back-button">돌아가기</a>
 
         <h1>☕ 꿈이음 청춘카페 시스템 구축 및 고도화 서비스</h1>
 
