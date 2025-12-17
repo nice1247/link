@@ -4,30 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>오재준 | 웹 개발자 포트폴리오</title>
+  <meta name="description" content="Spring 기반 백엔드 중심 웹 개발자 오재준의 포트폴리오입니다. 공공·SI 프로젝트 중심으로 설계, 외부 연동, 성능 최적화, 운영 안정화 경험을 담았습니다.">
+  <meta name="theme-color" content="#0b0f19">
+  <meta property="og:title" content="오재준 | 웹 개발자 포트폴리오">
+  <meta property="og:description" content="Spring 기반 백엔드 중심 웹 개발자 포트폴리오 (프로젝트/기술/연락처)">
+  <meta property="og:type" content="website">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background-color: #111; color: #eee; font-family: 'Arial', sans-serif; }
-    nav { background: #111; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
-    nav .nav-link { color: #ccc; font-weight: 500; }
-    nav .nav-link:hover { color: #00ffff; }
-    .section { padding: 80px 0; }
-    h2 { font-weight: 700; margin-bottom: 40px; font-size:2.5rem; border-bottom:2px solid #00ffff; display:inline-block; padding-bottom:8px; }
-    .card { background:#222; border:none; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s; color:#eee; }
-    .card:hover { transform: translateY(-5px); }
-    .card-title { color:#00ffff; font-weight:600; }
-    .card-text { color:#ccc; }
-    .btn-dark { background:#00ffff; border:none; color:#111; font-weight:600; }
-    .btn-dark:hover { background:#00cccc; }
-    footer { background: #111; color: #777; padding: 20px 0; }
-  </style>
+  <link rel="stylesheet" href="./portfolio/css/site.css">
 </head>
 <body>
+
+  <a class="skip-link" href="#main">본문으로 바로가기</a>
 
   <!-- Header / Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">오재준</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <a class="navbar-brand fw-bold" href="#top" aria-label="홈으로">오재준</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="메뉴 열기">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -40,51 +33,140 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="section text-center" id="hero" style="margin-top:60px;">
-    <div class="container">
-      <h1 class="fw-bold mb-3" style="font-size:3rem;">백엔드 중심 웹 개발자</h1>
-      <p class="lead" style="color: #ccc; font-size:1.2rem; max-width:700px; margin:0 auto;">
-        Spring 기반 실무형 웹사이트 백엔드 개발
-      </p>
-    </div>
-  </section>
+  <main id="main">
+    <!-- Hero -->
+    <header class="hero" id="top">
+      <div class="container">
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-7">
+            <div class="hero-kicker mb-3">Backend • Spring • Public/SI</div>
+            <h1 class="hero-title display-4 fw-bold">
+              오재준<br>
+              <span class="text-accent">백엔드 중심 웹 개발자</span>
+            </h1>
+            <p class="hero-subtitle lead mb-4">
+              Spring 기반 실무형 웹사이트를 안정적으로 구축하고, 외부 연동/성능 최적화/운영 안정화까지 끝까지 책임지는 개발을 지향합니다.
+            </p>
+            <div class="d-flex gap-2 flex-wrap">
+              <a class="btn btn-accent btn-lg" href="#projects">프로젝트 보기</a>
+              <a class="btn btn-outline-soft btn-lg" href="#contact">연락하기</a>
+            </div>
+            <div class="mt-4 d-flex flex-wrap gap-2">
+              <span class="tag">Java</span>
+              <span class="tag">Spring</span>
+              <span class="tag tag--soft">eGovFrame</span>
+              <span class="tag tag--soft">Redis</span>
+              <span class="tag tag--soft">Swagger</span>
+              <span class="tag tag--soft">Docker</span>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="hero-card p-4 p-md-5">
+              <div class="row g-3">
+                <div class="col-6">
+                  <div class="stat">
+                    <div class="stat__label">프로젝트</div>
+                    <div class="stat__value">17+</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stat">
+                    <div class="stat__label">주요 분야</div>
+                    <div class="stat__value">백엔드</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stat">
+                    <div class="stat__label">강점</div>
+                    <div class="stat__value">연동/최적화</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="stat">
+                    <div class="stat__label">운영</div>
+                    <div class="stat__value">안정화</div>
+                  </div>
+                </div>
+              </div>
+              <hr class="border-opacity-10 my-4">
+              <p class="mb-0 text-muted-2">
+                “복잡한 요구사항을 구조화하고, 사용자와 운영자가 모두 편한 시스템을 만드는 것”을 목표로 합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
   <!-- About Section -->
-  <section id="about" class="section text-center">
+  <section id="about" class="section">
     <div class="container">
-      <h2>About Me</h2>
-      <p style="font-size:1.2rem; line-height:1.8; max-width:900px; margin:0 auto 40px auto; color:#ccc;">
-        공공·SI 프로젝트 중심으로 <span style="color:#00ffff; font-weight:600;">Spring Framework</span> 기반의 백엔드 개발을 해왔습니다.<br>
-        항상 더 나은 성능을 추구하며 보다 나은 사용자환경을 만드려고 합니다.<br>
-        Redis, Swagger 등을 도입하여 처리량 및 대기시간 개선을 하였고 빠르고 편한 api 개발을 도왔습니다.
-      </p>
-      <!-- "저는 4년 경력의 백엔드 개발자로, 주로 공공/SI 시스템 구축 및 고도화 프로젝트를 담당해왔습니다. 
-       특히, 복잡한 비즈니스 로직을 Spring Framework 환경에서 안정적으로 구현하고, 시스템 성능 최적화 및 보안 강화를 주도했습니다. 
-       최근 프로젝트에서는 Redis 도입을 통해 평균 응답 시간을 ()% 개선하고, JWT 기반 인증 시스템 구축을 통해 보안성을 높였습니다." -->
-      <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap; padding-bottom:30px;">
-        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
-          <h5 style="color:#00ffff;">Language</h5>
-          <p>Java, Javascript, Jquery</p>
+      <div class="row align-items-start gy-4">
+        <div class="col-lg-6">
+          <h2 class="section-title">About</h2>
+          <p class="section-lead">
+            공공·SI 프로젝트 중심으로 <span class="text-accent fw-semibold">Spring Framework</span> 기반의 백엔드 개발을 해왔습니다.
+            Redis, Swagger 등의 도입을 통해 처리량/대기시간 개선과 팀 생산성 향상에 기여해왔습니다.
+          </p>
+
+          <ul class="list-check mt-4">
+            <li>
+              <div>
+                <strong>설계/구현</strong><br>
+                <span class="text-muted-2">복잡한 비즈니스 로직을 모델링하고, 트랜잭션/정합성을 고려해 안정적으로 구현합니다.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>외부 연동</strong><br>
+                <span class="text-muted-2">솔루션(암복호화/검색)·메시징·공공데이터 등 다양한 연동을 모듈화해 운영 리스크를 낮춥니다.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>최적화/운영</strong><br>
+                <span class="text-muted-2">쿼리/캐시/병목을 기반으로 체감 성능을 개선하고, 운영 관점의 안정화를 중요하게 생각합니다.</span>
+              </div>
+            </li>
+          </ul>
         </div>
-        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
-          <h5 style="color:#00ffff;">Framework</h5>
-          <p>Spring, eGovFrame</p>
-        </div>
-        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
-          <h5 style="color:#00ffff;">Server / Infra</h5>
-          <p>Apache, Tomcat, Nginx, Linux/Rocky, Docker</p>
-        </div>
-        <br/>
-      </div>
-      <div style="display:flex; justify-content:center; gap:30px; flex-wrap:wrap;">
-        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
-          <h5 style="color:#00ffff;">DB</h5>
-          <p>MySQL/Maria, MsSQL, Oracle, Redis</p>
-        </div>
-        <div style="background:#222; padding:20px 30px; border-radius:10px; min-width:180px;">
-          <h5 style="color:#00ffff;">Tool</h5>
-          <p>Git, Gitlab, SVN</p>
+
+        <div class="col-lg-6">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card card-hover h-100">
+                <div class="card-body">
+                  <h3 class="h5 card-title mb-2">Language</h3>
+                  <p class="card-text mb-0">Java, JavaScript, jQuery</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-hover h-100">
+                <div class="card-body">
+                  <h3 class="h5 card-title mb-2">Framework</h3>
+                  <p class="card-text mb-0">Spring, eGovFrame</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-hover h-100">
+                <div class="card-body">
+                  <h3 class="h5 card-title mb-2">Server / Infra</h3>
+                  <p class="card-text mb-0">Apache, Tomcat, Nginx, Linux/Rocky, Docker</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-hover h-100">
+                <div class="card-body">
+                  <h3 class="h5 card-title mb-2">DB / Tooling</h3>
+                  <p class="card-text mb-0">MySQL/Maria, MsSQL, Oracle, Redis · Git/GitLab/SVN</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,65 +175,113 @@
   <!-- Projects Section -->
   <section id="projects" class="section">
     <div class="container">
-      <h2>Projects</h2>
+      <h2 class="section-title">Projects</h2>
+      <p class="section-lead mb-4">대표 프로젝트 일부를 소개합니다. 각 카드에서 상세 내용을 확인할 수 있습니다.</p>
       <div class="row g-4">
         <div class="col-md-6">
-          <div class="card h-100">
+          <div class="card card-hover h-100">
             <div class="card-body">
               <h5 class="card-title">SOC 기술마켓 시스템 고도화</h5>
               <p class="card-text">공모 시스템 고도화, 암복호화/통합검색(솔루션) 연동 및 클라우드 서버 이전 등 다수 기능 고도화</p>
-              <a href="./portfolio/pages/project_1.html" class="btn btn-dark">자세히 보기</a>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="tag tag--soft">eGovFrame</span>
+                <span class="tag tag--soft">MsSQL</span>
+                <span class="tag tag--soft">솔루션 연동</span>
+              </div>
+              <a href="./portfolio/pages/project_1.html" class="btn btn-accent">자세히 보기</a>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card h-100">
+          <div class="card card-hover h-100">
             <div class="card-body">
               <h5 class="card-title">꿈이음 청춘카페</h5>
               <p class="card-text">앱을 통한 마일리지 결제 시스템, 웹을 통한 결제내역 및 카페관리 관리자 시스템</p>
-              <a href="./portfolio/pages/project_2.html" class="btn btn-dark">자세히 보기</a>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="tag tag--soft">결제</span>
+                <span class="tag tag--soft">OTP</span>
+                <span class="tag tag--soft">MySQL</span>
+              </div>
+              <a href="./portfolio/pages/project_2.html" class="btn btn-accent">자세히 보기</a>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card h-100">
+          <div class="card card-hover h-100">
             <div class="card-body">
               <h5 class="card-title">경산문화관광재단 홈페이지</h5>
               <p class="card-text">경산문화에 대한 각종 알림, 공모, 예약 등</p>
-              <a href="./portfolio/pages/project_3.html" class="btn btn-dark">자세히 보기</a>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="tag tag--soft">웹 서비스</span>
+                <span class="tag tag--soft">예약</span>
+                <span class="tag tag--soft">운영</span>
+              </div>
+              <a href="./portfolio/pages/project_3.html" class="btn btn-accent">자세히 보기</a>
             </div>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="card h-100">
+          <div class="card card-hover h-100">
             <div class="card-body">
               <h5 class="card-title">이천 호국원 예약 시스템</h5>
               <p class="card-text">예약 중심 웹, 키오스크 및 사이니지 페이지 개발 / 커서방식 페이징 및 jwt 토큰 도입</p>
-              <a href="./portfolio/pages/project_4.html" class="btn btn-dark">자세히 보기</a>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="tag tag--soft">JWT</span>
+                <span class="tag tag--soft">키오스크</span>
+                <span class="tag tag--soft">예약</span>
+              </div>
+              <a href="./portfolio/pages/project_4.html" class="btn btn-accent">자세히 보기</a>
             </div>
           </div>
         </div>
       </div>
       <div class="mt-5">
-        <h5 style="color:#00ffff;">기타 프로젝트</h5>
-        <p style="color:#ccc;">
-          이외 조문국박물관, 의성성냥공장, 삼성현박물관 등 전자정부 기반 웹사이트와 경산웹툰창작소, 대영레데코 CRM 관리 시스템 등 스프링 기반 웹사이트, 각종 api연계 프로젝트 등 총 17개 프로젝트 수행
-        </p>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="h5 card-title mb-2">기타 프로젝트</h3>
+            <p class="card-text mb-0">
+              이외 조문국박물관, 의성성냥공장, 삼성현박물관 등 전자정부 기반 웹사이트와
+              경산웹툰창작소, 대영레데코 CRM 관리 시스템 등 스프링 기반 웹사이트,
+              각종 API 연계 프로젝트 등 <strong>총 17개 프로젝트</strong>를 수행했습니다.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <section id="contact" class="section text-center" style="background:#111;">
+  <section id="contact" class="section">
     <div class="container">
-      <h2>Contact</h2>
-      <p>📧 Email: <a href="shade1247@gmail.com" style="color:#00ffff;">shade1247@gmail.com</a></p>
-      <!-- <p>💻 GitHub: <a href="https://github.com/" target="_blank" style="color:#00ffff;">github.com/yourid</a></p> -->
+      <h2 class="section-title">Contact</h2>
+      <p class="section-lead mb-4">협업/채용/프로젝트 문의는 아래 이메일로 편하게 연락 주세요.</p>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+              <div>
+                <div class="text-muted-2 mb-1">Email</div>
+                <div class="h5 mb-0">
+                  <a href="mailto:shade1247@gmail.com">shade1247@gmail.com</a>
+                </div>
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-accent" href="mailto:shade1247@gmail.com">메일 보내기</a>
+                <a class="btn btn-outline-soft" href="#projects">프로젝트 보기</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  </main>
+
   <footer class="text-center">
-    <p class="mb-0">© 2025 오재준 | Web Developer Portfolio</p>
+    <div class="container">
+      <p class="mb-0">© 2025 오재준 | Web Developer Portfolio</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
