@@ -219,6 +219,14 @@
         overflow: auto;
         padding-right: 2px; /* 스크롤바로 인한 미세한 가림 방지 */
         overscroll-behavior: contain;
+
+        /* scrollbar hidden (scroll 가능, 바만 숨김) */
+        -ms-overflow-style: none; /* IE/old Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .p4-aside--sticky::-webkit-scrollbar{
+        width: 0;
+        height: 0;
       }
 
       .p4-section{
@@ -415,7 +423,7 @@
               <div class="p4-aside--sticky">
                 <div class="p4-panel">
                   <div class="p4-panel__body">
-                    <h2 class="p4-panel__title">Snapshot</h2>
+                  <h2 class="p4-panel__title">요약</h2>
                     <p class="p4-panel__hint">실행 화면이 아니라 “구조/결정” 중심으로 정리한 페이지입니다.</p>
                     <dl class="p4-meta">
                       <div><dt>기간</dt><dd>2025.09–2025.11</dd></div>
@@ -438,7 +446,7 @@
                     <span class="p4-dot p4-dot--a" aria-hidden="true"></span>
                     <span class="p4-dot p4-dot--b" aria-hidden="true"></span>
                     <span class="p4-dot p4-dot--c" aria-hidden="true"></span>
-                    <span class="p4-terminal__title">decision-log.md</span>
+                  <span class="p4-terminal__title">설계 메모</span>
                   </div>
                   <pre><span class="cm">// 성능/정합성/보안, 3가지를 동시에 만족하는 방향으로 설계</span>
 <span class="kw">-</span> <span class="fn">CursorPaging</span>(cursorId, limit)  <span class="cm">// offset 제거</span>
