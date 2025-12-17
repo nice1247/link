@@ -205,8 +205,20 @@
         text-align: right;
       }
       .p4-panel--sticky{
+        position: static;
+      }
+
+      /* Sidebar sticky: aside 전체를 한 덩어리로 고정 + 내부 스크롤로 겹침 방지 */
+      .p4-aside{
+        align-self: start;
+      }
+      .p4-aside--sticky{
         position: sticky;
         top: 16px;
+        max-height: calc(100vh - 32px);
+        overflow: auto;
+        padding-right: 2px; /* 스크롤바로 인한 미세한 가림 방지 */
+        overscroll-behavior: contain;
       }
 
       .p4-section{
@@ -310,7 +322,12 @@
 
       @media (max-width: 576px){
         .p4-cover{ padding: 70px 0 34px; }
-        .p4-panel--sticky{ position: static; }
+        .p4-aside--sticky{
+          position: static;
+          max-height: none;
+          overflow: visible;
+          padding-right: 0;
+        }
       }
     </style>
 </head>
@@ -394,38 +411,40 @@
       <section class="p4-layout">
         <div class="container">
           <div class="row g-4">
-            <aside class="col-lg-4">
-              <div class="p4-panel p4-panel--sticky">
-                <div class="p4-panel__body">
-                  <h2 class="p4-panel__title">Snapshot</h2>
-                  <p class="p4-panel__hint">실행 화면이 아니라 “구조/결정” 중심으로 정리한 페이지입니다.</p>
-                  <dl class="p4-meta">
-                    <div><dt>기간</dt><dd>2025.09–2025.11</dd></div>
-                    <div><dt>채널</dt><dd>Web/App/Kiosk/Signage</dd></div>
-                    <div><dt>핵심</dt><dd>정합성 · 실시간 · 성능</dd></div>
-                    <div><dt>인증</dt><dd>Custom JWT</dd></div>
-                  </dl>
-                  <div class="p4-divider"></div>
-                  <h3 class="p4-panel__title" style="font-size:1rem; margin-bottom:8px;">Key outcomes</h3>
-                  <ul class="list-check" style="margin:0;">
-                    <li><div><strong>채널 간 일관성</strong><br><span class="text-muted-2">예약/취소/조회 로직 단일화</span></div></li>
-                    <li><div><strong>조회 병목 완화</strong><br><span class="text-muted-2">커서 페이징으로 DB 부하 감소</span></div></li>
-                    <li><div><strong>실시간 호출</strong><br><span class="text-muted-2">WebSocket 기반 상태 전파</span></div></li>
-                  </ul>
+            <aside class="col-lg-4 p4-aside">
+              <div class="p4-aside--sticky">
+                <div class="p4-panel">
+                  <div class="p4-panel__body">
+                    <h2 class="p4-panel__title">Snapshot</h2>
+                    <p class="p4-panel__hint">실행 화면이 아니라 “구조/결정” 중심으로 정리한 페이지입니다.</p>
+                    <dl class="p4-meta">
+                      <div><dt>기간</dt><dd>2025.09–2025.11</dd></div>
+                      <div><dt>채널</dt><dd>Web/App/Kiosk/Signage</dd></div>
+                      <div><dt>핵심</dt><dd>정합성 · 실시간 · 성능</dd></div>
+                      <div><dt>인증</dt><dd>Custom JWT</dd></div>
+                    </dl>
+                    <div class="p4-divider"></div>
+                    <h3 class="p4-panel__title" style="font-size:1rem; margin-bottom:8px;">Key outcomes</h3>
+                    <ul class="list-check" style="margin:0;">
+                      <li><div><strong>채널 간 일관성</strong><br><span class="text-muted-2">예약/취소/조회 로직 단일화</span></div></li>
+                      <li><div><strong>조회 병목 완화</strong><br><span class="text-muted-2">커서 페이징으로 DB 부하 감소</span></div></li>
+                      <li><div><strong>실시간 호출</strong><br><span class="text-muted-2">WebSocket 기반 상태 전파</span></div></li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
 
-              <div class="p4-terminal mt-3" aria-label="기술 메모">
-                <div class="p4-terminal__bar">
-                  <span class="p4-dot p4-dot--a" aria-hidden="true"></span>
-                  <span class="p4-dot p4-dot--b" aria-hidden="true"></span>
-                  <span class="p4-dot p4-dot--c" aria-hidden="true"></span>
-                  <span class="p4-terminal__title">decision-log.md</span>
-                </div>
-                <pre><span class="cm">// 성능/정합성/보안, 3가지를 동시에 만족하는 방향으로 설계</span>
+                <div class="p4-terminal mt-3" aria-label="기술 메모">
+                  <div class="p4-terminal__bar">
+                    <span class="p4-dot p4-dot--a" aria-hidden="true"></span>
+                    <span class="p4-dot p4-dot--b" aria-hidden="true"></span>
+                    <span class="p4-dot p4-dot--c" aria-hidden="true"></span>
+                    <span class="p4-terminal__title">decision-log.md</span>
+                  </div>
+                  <pre><span class="cm">// 성능/정합성/보안, 3가지를 동시에 만족하는 방향으로 설계</span>
 <span class="kw">-</span> <span class="fn">CursorPaging</span>(cursorId, limit)  <span class="cm">// offset 제거</span>
 <span class="kw">-</span> <span class="fn">SocketEvent</span>(call, stateChange)  <span class="cm">// signage 실시간 반영</span>
 <span class="kw">-</span> <span class="fn">JWTClaims</span>(role, scope, exp)     <span class="cm">// 권한을 토큰에 포함</span></pre>
+                </div>
               </div>
             </aside>
 
