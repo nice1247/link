@@ -233,4 +233,72 @@ footer{
   color:rgba(255,255,255,.55);
 }
 
+/* ===== Detail pages (project_*.html) helpers ===== */
+.back-fab{
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1100;
+
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,255,255,.92);
+  box-shadow: 0 14px 40px rgba(0,0,0,.55);
+
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 900;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
+}
+.back-fab:hover{
+  transform: translateY(-2px);
+  border-color: rgba(53,242,255,.22);
+  background: rgba(255,255,255,.10);
+  text-decoration:none;
+}
+.back-fab:active{ transform: translateY(0); }
+
+.callout{
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+  border-left: 4px solid var(--accent);
+  border-radius: 14px;
+  padding: 14px 14px;
+}
+.callout--soft{
+  border-left-color: rgba(255,255,255,.28);
+}
+.callout--warn{
+  border-left-color: rgba(255,235,59,.55);
+}
+.callout__title{
+  font-weight: 850;
+  letter-spacing: -.01em;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,.92);
+}
+.callout__body{
+  margin: 0;
+}
+
+@media (max-width: 576px){
+  .back-fab{
+    right: 16px;
+    bottom: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
 

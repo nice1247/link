@@ -4,209 +4,495 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이천호국원 시스템 - 포트폴리오</title>
+    <meta name="description" content="이천호국원 예약 및 호출 시스템(웹/앱/키오스크/사이니지) 구축 프로젝트 상세. 백엔드 아키텍처 설계, WebSocket 기반 실시간 호출, 커서 페이징, Custom JWT, 데이터 모델링을 통해 성능/보안/정합성을 개선한 사례.">
+    <meta name="theme-color" content="#0b0f19">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/site.css">
     <style>
-        /* Dark Theme - 기술 및 효율성 강조 (보라색 계열) */
-        body {
-            background-color: #1a1a1e; /* 매우 어두운 남색/검정 */
-            color: #e0e0e0;
-            font-family: 'Roboto Mono', 'Noto Sans KR', monospace; /* 모노스페이스 폰트 사용으로 기술적인 느낌 강조 */
-            line-height: 1.6;
-            margin: 0;
-            padding: 40px;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background-color: #24242c; /* 컨테이너 배경 */
-            padding: 50px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            border-left: 8px solid #9C27B0; /* 메인 포인트 컬러: 진한 보라색 */
-        }
-        h1 {
-            color: #9C27B0;
-            font-size: 2.5em;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        .subtitle {
-            font-size: 1.1em;
-            color: #BBBBBB;
-            margin-bottom: 40px;
-        }
-        h2 {
-            color: #E1BEE7; /* 서브 포인트: 밝은 보라색 */
-            margin-top: 40px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #3A3A4A;
-        }
-        h3 {
-            color: #e0e0e0;
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #2c2c36;
-            border-radius: 4px;
-        }
-        th, td {
-            padding: 12px 18px;
-            text-align: left;
-            border: 1px solid #3A3A4A;
-        }
-        th {
-            background-color: #4A148C; /* 보라색 계열로 기술 강조 */
-            color: white;
-            width: 25%;
-        }
-        .tech-tag {
-            display: inline-block;
-            background-color: #4CAF50; /* 녹색으로 안정성/주요 기술 강조 */
-            color: white;
-            padding: 4px 10px;
-            border-radius: 3px;
-            font-size: 0.9em;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .achievement-callout {
-            background-color: #333340;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 10px 0;
-            border-left: 5px solid #4CAF50;
-            line-height: 1.5;
-        }
-        .highlight-key {
-            color: #FFEB3B; /* 노란색 강조 */
-            font-weight: bold;
-        }
-        .back-button {
-            position: fixed; /* 요소를 뷰포트 기준으로 고정 */
-            bottom: 30px;    /* 하단에서 30px 위치 */
-            right: 30px;     /* 오른쪽에서 30px 위치 */
-            z-index: 1000;   /* 다른 요소 위에 표시 */
-            
-            /* 디자인 수정 */
-            display: flex; /* 내부 요소를 중앙에 정렬하기 위해 flex 사용 */
-            align-items: center;
-            justify-content: center;
-            
-            width: 50px;     /* 버튼 크기 조정 */
-            height: 50px;
-            background-color: #9C27B0; /* (프로젝트 색상 유지) */
-            color: white;
-            font-size: 1.5em; /* 화살표 크기 */
-            text-decoration: none;
-            border-radius: 50%; /* 원형 버튼으로 변경 */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .back-button:hover {
-            background-color: #7B1FA2;
-            transform: scale(1.1); /* 호버 시 약간 확대 */
-        }
+      /* project_4 전용: “케이스 스터디(시스템)” 톤 — 메인 히어로/카드와 의도적으로 다르게 */
+      body.project-detail{
+        --accent:#c77dff;
+        --accent2:#7c5cff;
+        --p4-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+        background:
+          radial-gradient(1100px 680px at 10% 10%, rgba(199,125,255,.20), transparent 58%),
+          radial-gradient(900px 600px at 85% 18%, rgba(124,92,255,.18), transparent 60%),
+          linear-gradient(180deg, rgba(6,9,16,1), rgba(8,16,36,1));
+      }
+      body.project-detail::before{
+        content:"";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 38px),
+          repeating-linear-gradient(180deg, rgba(255,255,255,.028) 0 1px, transparent 1px 32px);
+        opacity: .22;
+        mask-image: radial-gradient(900px 520px at 50% 0%, rgba(0,0,0,.9), transparent 70%);
+      }
+      body.project-detail main{ position: relative; z-index: 1; }
+
+      .p4-cover{
+        padding: 88px 0 42px;
+      }
+      .p4-top{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+      .p4-kicker{
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        font-family: var(--p4-mono);
+        font-size: .9rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,.68);
+      }
+      .p4-kicker::before{
+        content:"";
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 0 0 4px rgba(199,125,255,.12);
+      }
+      .p4-ext{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.82);
+        text-decoration:none;
+        border: 1px solid rgba(255,255,255,.14);
+        background: rgba(255,255,255,.04);
+        padding: 8px 10px;
+        border-radius: 999px;
+      }
+      .p4-ext:hover{
+        color: var(--accent);
+        border-color: rgba(199,125,255,.30);
+        text-decoration:none;
+      }
+
+      .p4-title{
+        font-family: var(--p4-mono);
+        font-weight: 900;
+        letter-spacing: -.03em;
+        line-height: 1.05;
+        margin: 0 0 14px;
+        font-size: clamp(2.1rem, 3.6vw, 3.0rem);
+      }
+      .p4-title .p4-accent{
+        background: linear-gradient(90deg, rgba(199,125,255,1), rgba(53,242,255,.95));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .p4-lead{
+        color: rgba(255,255,255,.74);
+        max-width: 56ch;
+        margin: 0 0 18px;
+      }
+      .p4-chips{
+        display:flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .p4-chip{
+        font-family: var(--p4-mono);
+        font-size: .92rem;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(0,0,0,.18);
+        border: 1px solid rgba(255,255,255,.12);
+        color: rgba(255,255,255,.86);
+      }
+      .p4-chip--accent{
+        border-color: rgba(199,125,255,.35);
+        background: rgba(199,125,255,.10);
+      }
+
+      .p4-diagram{
+        border-radius: 18px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 18px 50px rgba(0,0,0,.55);
+        overflow: hidden;
+      }
+      .p4-diagram__head{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        background: rgba(11,15,25,.55);
+      }
+      .p4-diagram__title{
+        font-family: var(--p4-mono);
+        font-weight: 850;
+        letter-spacing: -.02em;
+        color: rgba(255,255,255,.86);
+        font-size: .95rem;
+      }
+      .p4-diagram__meta{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.58);
+        font-size: .85rem;
+      }
+      .p4-diagram svg{
+        width:100%;
+        height:auto;
+        display:block;
+        background:
+          radial-gradient(800px 420px at 60% 10%, rgba(199,125,255,.16), transparent 62%),
+          radial-gradient(700px 460px at 20% 85%, rgba(53,242,255,.10), transparent 60%);
+      }
+      .p4-svg-node{ fill: rgba(0,0,0,.28); stroke: rgba(255,255,255,.18); stroke-width: 1.2; }
+      .p4-svg-node--api{ fill: rgba(199,125,255,.14); stroke: rgba(199,125,255,.35); }
+      .p4-svg-line{ stroke: rgba(255,255,255,.20); stroke-width: 1.2; }
+      .p4-svg-line--accent{ stroke: rgba(53,242,255,.35); }
+      .p4-svg-text{ fill: rgba(255,255,255,.86); font-family: var(--p4-mono); font-size: 12px; }
+      .p4-svg-sub{ fill: rgba(255,255,255,.58); font-family: var(--p4-mono); font-size: 11px; }
+
+      .p4-layout{ padding: 22px 0 84px; }
+      .p4-panel{
+        border-radius: 16px;
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 12px 34px rgba(0,0,0,.42);
+      }
+      .p4-panel__body{ padding: 18px 18px; }
+      .p4-panel__title{
+        font-family: var(--p4-mono);
+        font-weight: 900;
+        letter-spacing: -.02em;
+        margin: 0 0 10px;
+      }
+      .p4-panel__hint{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.56);
+        font-size: .86rem;
+        margin: 0 0 14px;
+      }
+      .p4-divider{
+        height: 1px;
+        background: rgba(255,255,255,.08);
+        margin: 14px 0;
+      }
+      .p4-meta{
+        margin: 0;
+      }
+      .p4-meta > div{
+        display:flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+      }
+      .p4-meta > div:last-child{ border-bottom: 0; }
+      .p4-meta dt{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.58);
+        font-weight: 750;
+      }
+      .p4-meta dd{
+        margin: 0;
+        color: rgba(255,255,255,.86);
+        font-weight: 700;
+        text-align: right;
+      }
+      .p4-panel--sticky{
+        position: sticky;
+        top: 16px;
+      }
+
+      .p4-section{
+        margin-bottom: 18px;
+      }
+      .p4-h2{
+        font-family: var(--p4-mono);
+        font-weight: 950;
+        letter-spacing: -.03em;
+        margin: 0 0 10px;
+        font-size: 1.15rem;
+        color: rgba(255,255,255,.92);
+      }
+      .p4-sublead{
+        margin: 0 0 14px;
+        color: rgba(255,255,255,.70);
+      }
+      .p4-timeline{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-left: 1px solid rgba(255,255,255,.14);
+      }
+      .p4-timeline li{
+        padding: 14px 0 14px 16px;
+        position: relative;
+      }
+      .p4-timeline li::before{
+        content:"";
+        position:absolute;
+        left: -6px;
+        top: 18px;
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        background: rgba(11,15,25,.95);
+        border: 2px solid rgba(199,125,255,.55);
+        box-shadow: 0 0 0 5px rgba(199,125,255,.10);
+      }
+      .p4-step{
+        display:flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .p4-step__title{
+        font-weight: 900;
+        color: rgba(255,255,255,.92);
+      }
+      .p4-step__tag{
+        font-family: var(--p4-mono);
+        font-size: .82rem;
+        color: rgba(255,255,255,.62);
+        border: 1px solid rgba(255,255,255,.12);
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.04);
+      }
+      .p4-step__desc{
+        margin: 0;
+        color: rgba(255,255,255,.72);
+      }
+
+      .p4-terminal{
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.28);
+      }
+      .p4-terminal__bar{
+        display:flex;
+        align-items:center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        background: rgba(11,15,25,.55);
+      }
+      .p4-dot{ width:10px; height:10px; border-radius: 999px; background: rgba(255,255,255,.18); }
+      .p4-dot--a{ background: rgba(255, 99, 132, .75); }
+      .p4-dot--b{ background: rgba(255, 206, 86, .75); }
+      .p4-dot--c{ background: rgba(75, 192, 192, .75); }
+      .p4-terminal__title{
+        margin-left: 6px;
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.70);
+        font-size: .9rem;
+      }
+      .p4-terminal pre{
+        margin: 0;
+        padding: 14px 14px;
+        color: rgba(255,255,255,.84);
+        font-family: var(--p4-mono);
+        font-size: .9rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+      .p4-terminal .kw{ color: rgba(53,242,255,.92); font-weight: 850; }
+      .p4-terminal .fn{ color: rgba(199,125,255,.96); font-weight: 900; }
+      .p4-terminal .cm{ color: rgba(255,255,255,.52); }
+
+      @media (max-width: 576px){
+        .p4-cover{ padding: 70px 0 34px; }
+        .p4-panel--sticky{ position: static; }
+      }
     </style>
 </head>
-<body>
+<body class="project-detail">
 
-    <a href="../..#projects" class="back-button">↩</a>
+    <a href="../..#projects" class="back-fab" aria-label="프로젝트 목록으로 돌아가기">↩</a>
 
-    <div class="container">
+    <main>
+      <header class="p4-cover">
+        <div class="container">
+          <div class="p4-top">
+            <div class="p4-kicker">System case study • Backend architecture</div>
+            <a class="p4-ext" href="https://www.icnc.kr" target="_blank" rel="noopener noreferrer" aria-label="이천호국원 홈페이지 새 창 열기">
+              icnc.kr ↗
+            </a>
+          </div>
 
-        <h1>이천호국원 예약 및 호출 시스템 구축</h1>
-        <p class="subtitle">웹, 앱, 키오스크 통합 다중 채널 백엔드 시스템</p>
+          <div class="row align-items-start gy-4">
+            <div class="col-lg-7">
+              <h1 class="p4-title">
+                이천호국원<br>
+                <span class="p4-accent">예약·호출 시스템</span>
+              </h1>
+              <p class="p4-lead">
+                웹·앱·키오스크(현장) + 사이니지(호출)까지 한 번에 맞물려야 하는 구조라,
+                “API 무결성/실시간/조회 성능/권한”을 중심으로 백엔드 아키텍처를 설계·구현했습니다.
+              </p>
+              <div class="p4-chips" aria-label="기술 스택 요약">
+                <span class="p4-chip p4-chip--accent">Spring</span>
+                <span class="p4-chip">Java</span>
+                <span class="p4-chip">MySQL/MariaDB</span>
+                <span class="p4-chip">WebSocket</span>
+                <span class="p4-chip">Custom JWT</span>
+                <span class="p4-chip">Swagger</span>
+              </div>
+            </div>
 
-        <h2>프로젝트 개요 및 아키텍처 역할</h2>
-        <table>
-            <tbody>
-                <tr>
-                    <th>프로젝트 명</th>
-                    <td>이천호국원 예약 및 호출 시스템 구축</td>
-                </tr>
-                <tr>
-                    <th>서비스 역할</th>
-                    <td>웹, 앱, 키오스크를 통합한 예약 및 현장 사용자 호출(사이니지) 시스템 제공</td>
-                </tr>
-                <tr>
-                    <th>참여 기간</th>
-                    <td>2025년 09월 ~ 2025년 11월</td>
-                </tr>
-                <tr>
-                    <th>URL</th>
-                    <td><a href="https://www.icnc.kr" target="_blank" rel="noopener noreferrer" style="color: #4CAF50;">이천호국원 홈페이지</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="col-lg-5">
+              <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램">
+                <div class="p4-diagram__head">
+                  <div class="p4-diagram__title">System map</div>
+                  <div class="p4-diagram__meta">web / app / kiosk / signage</div>
+                </div>
+                <svg viewBox="0 0 520 260" role="img" aria-label="클라이언트-API-데이터베이스-실시간 채널 구조">
+                  <line class="p4-svg-line" x1="120" y1="70" x2="240" y2="120"></line>
+                  <line class="p4-svg-line" x1="120" y1="130" x2="240" y2="140"></line>
+                  <line class="p4-svg-line" x1="120" y1="190" x2="240" y2="160"></line>
+                  <line class="p4-svg-line p4-svg-line--accent" x1="320" y1="140" x2="440" y2="90"></line>
+                  <line class="p4-svg-line" x1="320" y1="150" x2="440" y2="170"></line>
 
-        <p>프로젝트 전반의 <strong>백엔드 아키텍처 설계</strong> 및 <strong>데이터 모델링</strong>을 담당했습니다. 다중 채널 환경에서 예약 기능의 <strong>동일 동작 및 무결성 확보</strong>에 주력했으며, 실시간 소켓 통신 및 커스텀 JWT를 도입하여 시스템의 성능과 보안을 최적화했습니다.</p>
+                  <rect class="p4-svg-node" x="44" y="48" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="76">WEB</text>
+                  <text class="p4-svg-sub" x="122" y="76">예약/조회</text>
 
-        <h2>주요 기술 스택</h2>
-        <p>
-            <span class="tech-tag">Spring Framework</span>
-            <span class="tech-tag">Java</span>
-            <span class="tech-tag">MySQL (MariaDB)</span>
-            <span class="tech-tag">WebSocket</span>
-            <span class="tech-tag">Custom JWT</span>
-            <span class="tech-tag">Swagger</span>
-        </p>
-        <table>
-            <tbody>
-                <tr>
-                    <th>프레임워크</th>
-                    <td>Spring Framework, Java</td>
-                </tr>
-                <tr>
-                    <th>통신/보안</th>
-                    <td><span class="highlight-key">WebSocket</span>, <span class="highlight-key">Custom JWT Token</span></td>
-                </tr>
-                <tr>
-                    <th>개발 도구</th>
-                    <td>Swagger (API 문서화)</td>
-                </tr>
-            </tbody>
-        </table>
+                  <rect class="p4-svg-node" x="44" y="108" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="136">APP</text>
+                  <text class="p4-svg-sub" x="122" y="136">예약/인증</text>
 
-        <h2>핵심 기여 및 시스템 최적화</h2>
+                  <rect class="p4-svg-node" x="44" y="168" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="196">KIOSK</text>
+                  <text class="p4-svg-sub" x="132" y="196">현장</text>
 
-        <h3>1. 웹/앱/키오스크 통합 예약 시스템 구축</h3>
-        <p>세 가지 상이한 채널에서 동작하는 예약 시스템의 API 로직을 <span class="highlight-key">단일화된 구조로 설계</span>했습니다.</p>
-        <div class="achievement-callout">
-            <p><strong>[성과]</strong> 예약, 취소, 조회 등 핵심 API 로직을 단일화하여 모든 채널에서 <strong>동일한 기능과 일관성</strong>을 보장했습니다.</p>
+                  <rect class="p4-svg-node p4-svg-node--api" x="220" y="108" rx="14" ry="14" width="136" height="64"></rect>
+                  <text class="p4-svg-text" x="242" y="140">API</text>
+                  <text class="p4-svg-sub" x="282" y="140">정합성</text>
+
+                  <rect class="p4-svg-node" x="396" y="62" rx="12" ry="12" width="98" height="54"></rect>
+                  <text class="p4-svg-text" x="412" y="92">SOCKET</text>
+                  <text class="p4-svg-sub" x="418" y="106">호출</text>
+
+                  <rect class="p4-svg-node" x="396" y="146" rx="12" ry="12" width="98" height="54"></rect>
+                  <text class="p4-svg-text" x="418" y="176">DB</text>
+                  <text class="p4-svg-sub" x="412" y="190">Cursor</text>
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <h3>2. 대용량 데이터 처리를 위한 커서 페이징 도입</h3>
-        <p>조회 시간이 중요한 예약 및 호출 리스트에서 오프셋 방식 페이징 사용 시 발생하는 성능 저하를 해결했습니다.</p>
-        <div class="achievement-callout" style="border-left-color: #FFEB3B;">
-            <p><strong>[방법]</strong> <span class="highlight-key">커서 방식 페이징</span>을 적용하여 WHERE 절에 PK 또는 고유 인덱스 값을 활용했습니다.</p>
-            <p><strong>[성과]</strong> 데이터베이스 부하를 획기적으로 줄이고 리스트 로딩 속도를 <strong>크게 개선</strong>하며 고성능 조회를 실현했습니다.</p>
+      <section class="p4-layout">
+        <div class="container">
+          <div class="row g-4">
+            <aside class="col-lg-4">
+              <div class="p4-panel p4-panel--sticky">
+                <div class="p4-panel__body">
+                  <h2 class="p4-panel__title">Snapshot</h2>
+                  <p class="p4-panel__hint">실행 화면이 아니라 “구조/결정” 중심으로 정리한 페이지입니다.</p>
+                  <dl class="p4-meta">
+                    <div><dt>기간</dt><dd>2025.09–2025.11</dd></div>
+                    <div><dt>채널</dt><dd>Web/App/Kiosk/Signage</dd></div>
+                    <div><dt>핵심</dt><dd>정합성 · 실시간 · 성능</dd></div>
+                    <div><dt>인증</dt><dd>Custom JWT</dd></div>
+                  </dl>
+                  <div class="p4-divider"></div>
+                  <h3 class="p4-panel__title" style="font-size:1rem; margin-bottom:8px;">Key outcomes</h3>
+                  <ul class="list-check" style="margin:0;">
+                    <li><div><strong>채널 간 일관성</strong><br><span class="text-muted-2">예약/취소/조회 로직 단일화</span></div></li>
+                    <li><div><strong>조회 병목 완화</strong><br><span class="text-muted-2">커서 페이징으로 DB 부하 감소</span></div></li>
+                    <li><div><strong>실시간 호출</strong><br><span class="text-muted-2">WebSocket 기반 상태 전파</span></div></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="p4-terminal mt-3" aria-label="기술 메모">
+                <div class="p4-terminal__bar">
+                  <span class="p4-dot p4-dot--a" aria-hidden="true"></span>
+                  <span class="p4-dot p4-dot--b" aria-hidden="true"></span>
+                  <span class="p4-dot p4-dot--c" aria-hidden="true"></span>
+                  <span class="p4-terminal__title">decision-log.md</span>
+                </div>
+                <pre><span class="cm">// 성능/정합성/보안, 3가지를 동시에 만족하는 방향으로 설계</span>
+<span class="kw">-</span> <span class="fn">CursorPaging</span>(cursorId, limit)  <span class="cm">// offset 제거</span>
+<span class="kw">-</span> <span class="fn">SocketEvent</span>(call, stateChange)  <span class="cm">// signage 실시간 반영</span>
+<span class="kw">-</span> <span class="fn">JWTClaims</span>(role, scope, exp)     <span class="cm">// 권한을 토큰에 포함</span></pre>
+              </div>
+            </aside>
+
+            <div class="col-lg-8">
+              <div class="p4-panel p4-section">
+                <div class="p4-panel__body">
+                  <h2 class="p4-h2">프로젝트 개요</h2>
+                  <p class="p4-sublead">
+                    다중 채널에서 “같은 예약”이 돌아가야 하고, 현장에서는 “호출”이 끊기면 바로 민원이 되는 구조였습니다.
+                    그래서 기능 나열이 아니라, 시스템 안정성을 좌우하는 축을 먼저 잡고 구현했습니다.
+                  </p>
+                  <ul class="p4-timeline" aria-label="해결 흐름 타임라인">
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">API 로직 단일화</div>
+                        <div class="p4-step__tag">Consistency</div>
+                      </div>
+                      <p class="p4-step__desc">웹/앱/키오스크에서 공통으로 쓰는 도메인 로직을 중심에 두고 채널은 “입력/표현”으로 분리.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">커서 페이징 도입</div>
+                        <div class="p4-step__tag">Performance</div>
+                      </div>
+                      <p class="p4-step__desc">오프셋 페이징의 누적 비용을 제거하고, 인덱스 기반 WHERE 조건으로 리스트 조회를 안정화.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">WebSocket 호출/상태 전파</div>
+                        <div class="p4-step__tag">Real-time</div>
+                      </div>
+                      <p class="p4-step__desc">호출/대기/완료 상태 변경을 즉시 전파하고, 사이니지 화면이 “항상 최신”이 되도록 구성.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">Custom JWT로 권한/보안 강화</div>
+                        <div class="p4-step__tag">Security</div>
+                      </div>
+                      <p class="p4-step__desc">관리자 등급/권한을 클레임으로 담아 호출 권한을 세밀하게 제어하고 API 무결성을 강화.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">Non-PK 데이터 논리 모델링</div>
+                        <div class="p4-step__tag">Data modeling</div>
+                      </div>
+                      <p class="p4-step__desc">고유키가 없는 데이터를 안전하게 식별/갱신할 수 있도록 논리 키/처리 규칙을 정의.</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="p4-panel p4-section">
+                <div class="p4-panel__body">
+                  <h2 class="p4-h2">프로젝트를 통해 얻은 역량</h2>
+                  <ul class="list-check" style="margin:0;">
+                    <li><div><strong>고성능 데이터 처리</strong><br><span class="text-muted-2">대용량 리스트 병목을 커서 방식으로 해결하며 최적화 관점을 강화.</span></div></li>
+                    <li><div><strong>복합 시스템 통합</strong><br><span class="text-muted-2">실시간(WebSocket)·보안(JWT)·성능(페이징)을 묶어 안정적인 구조로 구현.</span></div></li>
+                    <li><div><strong>API 무결성 설계</strong><br><span class="text-muted-2">채널이 늘어도 동일한 결과가 나오도록 도메인 중심으로 정리.</span></div></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <h3>3. 실시간 호출 시스템 (WebSocket) 및 QR 인증 로직 개발</h3>
-        <p>은행 번호표 호출 시스템과 유사한 실시간 호출 및 상태 업데이트를 위한 <span class="highlight-key">소켓 통신 모듈</span>을 구축했습니다. 현장 예약자 식별을 위한 QR 생성/검증 로직도 함께 구현했습니다.</p>
-        
-        <h3>4. 보안 및 협업 효율 강화를 위한 인증 시스템 구축</h3>
-        <p>시스템 보안 강화 및 API 무결성 확보를 위해 <span class="highlight-key">Custom JWT (JSON Web Token) 방식</span>을 직접 설계하고 적용했습니다.</p>
-        <div class="achievement-callout">
-            <p><strong>[역할]</strong> 인증 과정 및 토큰 검증 로직을 구현하여, 관리자 등급별 권한 처리를 토큰 내에 포함시켜 API 호출 권한을 <strong>세밀하게 제어</strong>했습니다. Swagger 최신화로 앱 개발팀과의 협업 효율을 높였습니다.</p>
-        </div>
-        
-        <h3>5. PK 없는 데이터 처리를 위한 논리 모델링</h3>
-        <p>PK(Primary Key) 값을 처리할 수 없는 고유 값이 없는(Non-PK) 데이터에 대한 등록 및 업데이트 처리를 위해 논리적인 모델링 및 처리 방식을 정의했습니다.</p>
-        <div class="achievement-callout">
-            <p><strong>[성과]</strong> 시스템 무결성을 해치지 않으면서도 외부 시스템의 데이터 제약 조건을 수용할 수 있는 <span class="highlight-key">유연한 데이터 처리 아키텍처</span>를 구축했습니다.</p>
-        </div>
-
-        <h2>프로젝트를 통한 주요 경험 및 역량</h2>
-        <ul>
-            <li><strong>고성능 데이터 처리:</strong> 대용량 환경에서 리스트 페이징의 성능 문제를 <span class="highlight-key">커서 방식</span>으로 해결하며, 시스템 성능 최적화에 대한 깊이 있는 이해를 얻었습니다.</li>
-            <li><strong>통합 솔루션 경험:</strong> 실시간 통신(소켓), 보안(JWT), 성능(커서 페이징) 등 핵심 백엔드 기술 요소를 통합하여 복합적인 시스템을 성공적으로 구축하는 역량을 입증했습니다.</li>
-            <li><strong>다중 플랫폼 API 무결성 확보:</strong> 웹, 앱, 키오스크 환경에서 협업 부서와 관계없이 기능의 일관성을 유지하는 <strong>API 설계 및 관리 능력</strong>을 키웠습니다.</li>
-        </ul>
-
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
