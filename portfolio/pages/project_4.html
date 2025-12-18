@@ -215,18 +215,6 @@
       .p4-aside--sticky{
         position: sticky;
         top: 16px;
-        max-height: calc(100vh - 32px);
-        overflow: auto;
-        padding-right: 2px; /* 스크롤바로 인한 미세한 가림 방지 */
-        overscroll-behavior: contain;
-
-        /* scrollbar hidden (scroll 가능, 바만 숨김) */
-        -ms-overflow-style: none; /* IE/old Edge */
-        scrollbar-width: none; /* Firefox */
-      }
-      .p4-aside--sticky::-webkit-scrollbar{
-        width: 0;
-        height: 0;
       }
 
       .p4-section{
@@ -332,9 +320,6 @@
         .p4-cover{ padding: 70px 0 34px; }
         .p4-aside--sticky{
           position: static;
-          max-height: none;
-          overflow: visible;
-          padding-right: 0;
         }
       }
     </style>
