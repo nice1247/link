@@ -4,193 +4,499 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>경산문화관광재단 홈페이지 - 포트폴리오</title>
+    <meta name="description" content="경산문화관광재단 홈페이지 구축 프로젝트 상세. PL 역할 수행, 상이한 예약 모델 동시 구현, Redis 기반 세션 안정화, 유연한 시스템 설계를 통해 운영 안정성을 확보한 사례.">
+    <meta name="theme-color" content="#0b0f19">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/site.css">
     <style>
-        /* Dark Theme 기본 스타일 */
-        body {
-            background-color: #1c1c1c; /* 어두운 배경 */
-            color: #d0d0d0;
-            font-family: 'Noto Sans KR', 'Segoe UI', sans-serif;
-            line-height: 1.7;
-            margin: 0;
-            padding: 40px;
+      /* project_4 전용: "케이스 스터디(시스템)" 톤 — 메인 히어로/카드와 의도적으로 다르게 */
+      body.project-detail{
+        --accent:#c77dff;
+        --accent2:#7c5cff;
+        --p4-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+        background:
+          radial-gradient(1100px 680px at 10% 10%, rgba(199,125,255,.20), transparent 58%),
+          radial-gradient(900px 600px at 85% 18%, rgba(124,92,255,.18), transparent 60%),
+          linear-gradient(180deg, rgba(6,9,16,1), rgba(8,16,36,1));
+      }
+      body.project-detail::before{
+        content:"";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 38px),
+          repeating-linear-gradient(180deg, rgba(255,255,255,.028) 0 1px, transparent 1px 32px);
+        opacity: .22;
+        mask-image: radial-gradient(900px 520px at 50% 0%, rgba(0,0,0,.9), transparent 70%);
+      }
+      body.project-detail main{ position: relative; z-index: 1; }
+
+      .p4-cover{
+        padding: 88px 0 42px;
+      }
+      .p4-top{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+      .p4-kicker{
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        font-family: var(--p4-mono);
+        font-size: .9rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,.68);
+      }
+      .p4-kicker::before{
+        content:"";
+        width: 10px;
+        height: 10px;
+        border-radius: 3px;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        box-shadow: 0 0 0 4px rgba(199,125,255,.12);
+      }
+      .p4-ext{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.82);
+        text-decoration:none;
+        border: 1px solid rgba(255,255,255,.14);
+        background: rgba(255,255,255,.04);
+        padding: 8px 10px;
+        border-radius: 999px;
+      }
+      .p4-ext:hover{
+        color: var(--accent);
+        border-color: rgba(199,125,255,.30);
+        text-decoration:none;
+      }
+
+      .p4-title{
+        font-family: var(--p4-mono);
+        font-weight: 900;
+        letter-spacing: -.03em;
+        line-height: 1.05;
+        margin: 0 0 14px;
+        font-size: clamp(2.1rem, 3.6vw, 3.0rem);
+      }
+      .p4-title .p4-accent{
+        background: linear-gradient(90deg, rgba(199,125,255,1), rgba(53,242,255,.95));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .p4-lead{
+        color: rgba(255,255,255,.74);
+        max-width: 56ch;
+        margin: 0 0 18px;
+      }
+      .p4-chips{
+        display:flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .p4-chip{
+        font-family: var(--p4-mono);
+        font-size: .92rem;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(0,0,0,.18);
+        border: 1px solid rgba(255,255,255,.12);
+        color: rgba(255,255,255,.86);
+      }
+      .p4-chip--accent{
+        border-color: rgba(199,125,255,.35);
+        background: rgba(199,125,255,.10);
+      }
+
+      .p4-diagram{
+        border-radius: 18px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 18px 50px rgba(0,0,0,.55);
+        overflow: hidden;
+      }
+      .p4-diagram__head{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        background: rgba(11,15,25,.55);
+      }
+      .p4-diagram__title{
+        font-family: var(--p4-mono);
+        font-weight: 850;
+        letter-spacing: -.02em;
+        color: rgba(255,255,255,.86);
+        font-size: .95rem;
+      }
+      .p4-diagram__meta{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.58);
+        font-size: .85rem;
+      }
+      .p4-diagram svg{
+        width:100%;
+        height:auto;
+        display:block;
+        background:
+          radial-gradient(800px 420px at 60% 10%, rgba(199,125,255,.16), transparent 62%),
+          radial-gradient(700px 460px at 20% 85%, rgba(53,242,255,.10), transparent 60%);
+      }
+      .p4-svg-node{ fill: rgba(0,0,0,.28); stroke: rgba(255,255,255,.18); stroke-width: 1.2; }
+      .p4-svg-node--api{ fill: rgba(199,125,255,.14); stroke: rgba(199,125,255,.35); }
+      .p4-svg-line{ stroke: rgba(255,255,255,.20); stroke-width: 1.2; }
+      .p4-svg-line--accent{ stroke: rgba(53,242,255,.35); }
+      .p4-svg-text{ fill: rgba(255,255,255,.86); font-family: var(--p4-mono); font-size: 12px; }
+      .p4-svg-sub{ fill: rgba(255,255,255,.58); font-family: var(--p4-mono); font-size: 11px; }
+
+      .p4-layout{ padding: 22px 0 84px; }
+      .p4-panel{
+        border-radius: 16px;
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.12);
+        box-shadow: 0 12px 34px rgba(0,0,0,.42);
+      }
+      .p4-panel__body{ padding: 18px 18px; }
+      .p4-panel__title{
+        font-family: var(--p4-mono);
+        font-weight: 900;
+        letter-spacing: -.02em;
+        margin: 0 0 10px;
+      }
+      .p4-panel__hint{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.56);
+        font-size: .86rem;
+        margin: 0 0 14px;
+      }
+      .p4-divider{
+        height: 1px;
+        background: rgba(255,255,255,.08);
+        margin: 14px 0;
+      }
+      .p4-meta{
+        margin: 0;
+      }
+      .p4-meta > div{
+        display:flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+      }
+      .p4-meta > div:last-child{ border-bottom: 0; }
+      .p4-meta dt{
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.58);
+        font-weight: 750;
+      }
+      .p4-meta dd{
+        margin: 0;
+        color: rgba(255,255,255,.86);
+        font-weight: 700;
+        text-align: right;
+      }
+      .p4-panel--sticky{
+        position: static;
+      }
+
+      /* Sidebar sticky: aside 전체를 한 덩어리로 고정 + 내부 스크롤로 겹침 방지 */
+      .p4-aside{
+        align-self: start;
+      }
+      .p4-aside--sticky{
+        position: sticky;
+        top: 16px;
+      }
+
+      .p4-section{
+        margin-bottom: 18px;
+      }
+      .p4-h2{
+        font-family: var(--p4-mono);
+        font-weight: 950;
+        letter-spacing: -.03em;
+        margin: 0 0 10px;
+        font-size: 1.15rem;
+        color: rgba(255,255,255,.92);
+      }
+      .p4-sublead{
+        margin: 0 0 14px;
+        color: rgba(255,255,255,.70);
+      }
+      .p4-timeline{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-left: 1px solid rgba(255,255,255,.14);
+      }
+      .p4-timeline li{
+        padding: 14px 0 14px 16px;
+        position: relative;
+      }
+      .p4-timeline li::before{
+        content:"";
+        position:absolute;
+        left: -6px;
+        top: 18px;
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        background: rgba(11,15,25,.95);
+        border: 2px solid rgba(199,125,255,.55);
+        box-shadow: 0 0 0 5px rgba(199,125,255,.10);
+      }
+      .p4-step{
+        display:flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .p4-step__title{
+        font-weight: 900;
+        color: rgba(255,255,255,.92);
+      }
+      .p4-step__tag{
+        font-family: var(--p4-mono);
+        font-size: .82rem;
+        color: rgba(255,255,255,.62);
+        border: 1px solid rgba(255,255,255,.12);
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.04);
+      }
+      .p4-step__desc{
+        margin: 0;
+        color: rgba(255,255,255,.72);
+      }
+
+      .p4-terminal{
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.28);
+      }
+      .p4-terminal__bar{
+        display:flex;
+        align-items:center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        background: rgba(11,15,25,.55);
+      }
+      .p4-dot{ width:10px; height:10px; border-radius: 999px; background: rgba(255,255,255,.18); }
+      .p4-dot--a{ background: rgba(255, 99, 132, .75); }
+      .p4-dot--b{ background: rgba(255, 206, 86, .75); }
+      .p4-dot--c{ background: rgba(75, 192, 192, .75); }
+      .p4-terminal__title{
+        margin-left: 6px;
+        font-family: var(--p4-mono);
+        color: rgba(255,255,255,.70);
+        font-size: .9rem;
+      }
+      .p4-terminal pre{
+        margin: 0;
+        padding: 14px 14px;
+        color: rgba(255,255,255,.84);
+        font-family: var(--p4-mono);
+        font-size: .9rem;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+      .p4-terminal .kw{ color: rgba(53,242,255,.92); font-weight: 850; }
+      .p4-terminal .fn{ color: rgba(199,125,255,.96); font-weight: 900; }
+      .p4-terminal .cm{ color: rgba(255,255,255,.52); }
+
+      @media (max-width: 576px){
+        .p4-cover{ padding: 70px 0 34px; }
+        .p4-aside--sticky{
+          position: static;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: #282828; /* 컨테이너 배경 */
-            padding: 40px 60px;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-            border-top: 5px solid #00A388; /* 포인트 컬러: 청록색 계열 (신뢰성) */
-        }
-        h1 {
-            color: #00A388;
-            font-size: 2.2em;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            font-size: 1.1em;
-            color: #AAAAAA;
-            margin-bottom: 30px;
-        }
-        h2 {
-            color: #88C0D0; /* 서브 포인트: 청색 계열 (기술/솔루션 강조) */
-            margin-top: 35px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #444444;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            padding: 12px 18px;
-            text-align: left;
-            border: 1px solid #3a3a3a;
-        }
-        th {
-            background-color: #333333;
-            color: #e0e0e0;
-            width: 25%;
-        }
-        .tag-info {
-            display: inline-block;
-            background-color: #444444;
-            color: #e0e0e0;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            margin-right: 8px;
-        }
-        .highlight-pl {
-            color: #FFD700; /* PL 역할 강조 */
-            font-weight: bold;
-        }
-        .solution-box {
-            background-color: #383838;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 5px solid #88C0D0;
-        }
-        .back-button {
-            position: fixed; /* 요소를 뷰포트 기준으로 고정 */
-            bottom: 30px;    /* 하단에서 30px 위치 */
-            right: 30px;     /* 오른쪽에서 30px 위치 */
-            z-index: 1000;   /* 다른 요소 위에 표시 */
-            
-            /* 디자인 수정 */
-            display: flex; /* 내부 요소를 중앙에 정렬하기 위해 flex 사용 */
-            align-items: center;
-            justify-content: center;
-            
-            width: 50px;     /* 버튼 크기 조정 */
-            height: 50px;
-            background-color: #88C0D0; /* (프로젝트 색상 유지) */
-            color: white;
-            font-size: 1.5em; /* 화살표 크기 */
-            text-decoration: none;
-            border-radius: 50%; /* 원형 버튼으로 변경 */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .back-button:hover {
-            background-color: #6b99a5;
-            transform: scale(1.1); /* 호버 시 약간 확대 */
-        }
+      }
     </style>
 </head>
-<body>
+<body class="project-detail">
 
-    <a href="../..#projects" class="back-button">↩</a>
+    <a href="../..#projects" class="back-fab" aria-label="프로젝트 목록으로 돌아가기">↩</a>
 
-    <div class="container">
+    <main>
+      <header class="p4-cover">
+        <div class="container">
+          <div class="p4-top">
+            <div class="p4-kicker">PL Role • Spring • Redis</div>
+            <a class="p4-ext" href="https://gsctf.or.kr" target="_blank" rel="noopener noreferrer" aria-label="경산문화재단 홈페이지 새 창 열기">
+              gsctf.or.kr ↗
+            </a>
+          </div>
 
-        <h1>경산문화관광재단 홈페이지 구축</h1>
-        <p class="subtitle">문화 행사, 예약, 알림을 제공하는 공식 플랫폼 개발</p>
+          <div class="row align-items-start gy-4">
+            <div class="col-lg-7">
+              <h1 class="p4-title">
+                경산문화관광재단<br>
+                <span class="p4-accent">홈페이지 구축</span>
+              </h1>
+              <p class="p4-lead">
+                경산 지역 문화 행사 정보, 공모, 공연/전시 예약 및 알림을 제공하는 공식 플랫폼입니다.
+                3인 개발팀의 PL 역할을 수행하며 프로젝트 전반의 백엔드 개발 및 데이터 모델링을 담당했습니다.
+              </p>
+              <div class="p4-chips" aria-label="기술 스택 요약">
+                <span class="p4-chip p4-chip--accent">Spring</span>
+                <span class="p4-chip">Java</span>
+                <span class="p4-chip">MySQL/MariaDB</span>
+                <span class="p4-chip">Redis</span>
+                <span class="p4-chip">PL</span>
+                <span class="p4-chip">Code Review</span>
+              </div>
+            </div>
 
-        <h2>프로젝트 개요 및 리딩 역할</h2>
-        <table>
-            <tbody>
-                <tr>
-                    <th>프로젝트 명</th>
-                    <td>경산문화관광재단 홈페이지 구축</td>
-                </tr>
-                <tr>
-                    <th>서비스 역할</th>
-                    <td>경산 지역 문화 행사 정보, 공모, 공연/전시 예약 및 알림 제공</td>
-                </tr>
-                <tr>
-                    <th>참여 기간</th>
-                    <td>2025년 04월 ~ 2025년 06월</td>
-                </tr>
-                <tr>
-                    <th>URL</th>
-                    <td><a href="https://gsctf.or.kr" target="_blank" rel="noopener noreferrer" style="color: #00A388;">경산문화재단 홈페이지</a></td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="col-lg-5">
+              <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램">
+                <div class="p4-diagram__head">
+                  <div class="p4-diagram__title">System architecture</div>
+                  <div class="p4-diagram__meta">reservation / session / flexibility</div>
+                </div>
+                <svg viewBox="0 0 520 260" role="img" aria-label="예약-세션-유연성 구조">
+                  <line class="p4-svg-line" x1="120" y1="70" x2="240" y2="120"></line>
+                  <line class="p4-svg-line" x1="120" y1="130" x2="240" y2="140"></line>
+                  <line class="p4-svg-line" x1="120" y1="190" x2="240" y2="160"></line>
+                  <line class="p4-svg-line p4-svg-line--accent" x1="320" y1="140" x2="440" y2="90"></line>
+                  <line class="p4-svg-line" x1="320" y1="150" x2="440" y2="170"></line>
 
-        <h3><span class="highlight-pl">PL (Project Leader)</span> 역할 및 품질 관리</h3>
-        <p>프로젝트 전반의 백엔드 개발 및 데이터 모델링을 담당함과 동시에, <strong>3인 개발팀의 PL 역할</strong>을 수행하며 프로젝트 성공을 이끌었습니다.</p>
-        <ul>
-            <li><strong>코드 및 프로세스 통일화:</strong> 공용 모듈 개발을 주도하고, 프로젝트 전체의 변수명 및 서비스 프로세스 통일화를 진행하여 협업 효율성 및 코드 가독성을 극대화했습니다.</li>
-            <li><strong>일정 및 자원 관리:</strong> 업무 단위별 명확한 일정을 분배하고, 정기적인 <strong>코드 검토(Code Review)</strong>를 통해 개발 표준 준수와 품질 유지를 철저히 관리했습니다.</li>
-        </ul>
+                  <rect class="p4-svg-node" x="44" y="48" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="76">예약 모델</text>
+                  <text class="p4-svg-sub" x="122" y="76">다중 구현</text>
 
-        <h2>기술 스택</h2>
-        <p>
-            <span class="tag-info">Spring Framework</span>
-            <span class="tag-info">Java</span>
-            <span class="tag-info">MySQL (MariaDB)</span>
-            <span class="tag-info">Redis (세션/캐싱)</span>
-            <span class="tag-info">GitLab</span>
-        </p>
-        <table>
-            <tbody>
-                <tr>
-                    <th>프레임워크</th>
-                    <td>Spring Framework, Java</td>
-                </tr>
-                <tr>
-                    <th>데이터베이스</th>
-                    <td>MySQL (MariaDB)</td>
-                </tr>
-                <tr>
-                    <th>핵심 인프라</th>
-                    <td><strong>Redis</strong> (세션 유지 및 캐싱 관리)</td>
-                </tr>
-            </tbody>
-        </table>
+                  <rect class="p4-svg-node" x="44" y="108" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="136">Redis 세션</text>
+                  <text class="p4-svg-sub" x="122" y="136">안정화</text>
 
-        <h2>핵심 기여 및 기술적 난제 해결</h2>
+                  <rect class="p4-svg-node" x="44" y="168" rx="12" ry="12" width="152" height="44"></rect>
+                  <text class="p4-svg-text" x="64" y="196">모듈화</text>
+                  <text class="p4-svg-sub" x="132" y="196">유연성</text>
 
-        <h3>1. 상이한 예약 모델 동시 구현 및 유연한 운영 시스템 구축</h3>
-        <p>공통 모듈을 기반으로, 시설 대관 예약 등 상이한 비즈니스 요구사항을 충족하는 <span class="highlight-pl">두 가지 예약 모델을 동시 구현</span>했습니다.</p>
-        <div class="solution-box">
-            <p><strong>[성과]</strong> 예약 유형별로 차별화된 설정 관리 시스템을 백엔드에 구축하여, 관리자가 <strong>코드를 수정하지 않고</strong>도 복잡한 예약 로직을 유연하게 운영할 수 있도록 지원했습니다.</p>
+                  <rect class="p4-svg-node p4-svg-node--api" x="220" y="108" rx="14" ry="14" width="136" height="64"></rect>
+                  <text class="p4-svg-text" x="242" y="140">API</text>
+                  <text class="p4-svg-sub" x="282" y="140">무결성</text>
+
+                  <rect class="p4-svg-node" x="396" y="62" rx="12" ry="12" width="98" height="54"></rect>
+                  <text class="p4-svg-text" x="412" y="92">PL</text>
+                  <text class="p4-svg-sub" x="418" y="106">관리</text>
+
+                  <rect class="p4-svg-node" x="396" y="146" rx="12" ry="12" width="98" height="54"></rect>
+                  <text class="p4-svg-text" x="418" y="176">DB</text>
+                  <text class="p4-svg-sub" x="412" y="190">MySQL</text>
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <h3>2. 외부 환경 세션 유지 난제 해결 및 안정성 확보</h3>
-        <p>네이버 앱 등 외부 앱 브라우저 환경에서 발생하는 간헐적인 세션 끊김 현상으로 예약이 실패하는 <strong>치명적인 문제</strong>를 해결했습니다.</p>
-        <div class="solution-box">
-            <p><strong>[해결]</strong> <strong>Redis를 도입</strong>하여 기존 Tomcat 세션 대신 <strong>중앙 집중식 세션 관리</strong>를 수행하도록 구조를 변경했습니다.</p>
-            <p><strong>[성과]</strong> 세션 안정성을 획기적으로 확보하여 모든 브라우저 환경에서 예약 프로세스의 <strong>무결성을 보장</strong>했습니다.</p>
+      <section class="p4-layout">
+        <div class="container">
+          <div class="row g-4">
+            <aside class="col-lg-4 p4-aside">
+              <div class="p4-aside--sticky">
+                <div class="p4-panel">
+                  <div class="p4-panel__body">
+                  <h2 class="p4-panel__title">요약</h2>
+                    <p class="p4-panel__hint">프로젝트 전반의 백엔드 개발 및 데이터 모델링을 담당함과 동시에, 3인 개발팀의 PL 역할을 수행했습니다.</p>
+                    <dl class="p4-meta">
+                      <div><dt>기간</dt><dd>2025.04–2025.06</dd></div>
+                      <div><dt>역할</dt><dd>PL (Project Leader)</dd></div>
+                      <div><dt>핵심</dt><dd>예약 · 세션 · 유연성</dd></div>
+                      <div><dt>인프라</dt><dd>Redis (세션/캐싱)</dd></div>
+                    </dl>
+                    <div class="p4-divider"></div>
+                    <h3 class="p4-panel__title" style="font-size:1rem; margin-bottom:8px;">Key outcomes</h3>
+                    <ul class="list-check" style="margin:0;">
+                      <li><div><strong>예약 시스템 유연성</strong><br><span class="text-muted-2">코드 수정 없이 복잡한 예약 로직 운영</span></div></li>
+                      <li><div><strong>세션 안정성 확보</strong><br><span class="text-muted-2">Redis 도입으로 모든 브라우저 환경에서 무결성 보장</span></div></li>
+                      <li><div><strong>프로젝트 관리 역량</strong><br><span class="text-muted-2">코드 검토 및 개발 표준 확립으로 고품질 달성</span></div></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="p4-terminal mt-3" aria-label="기술 메모">
+                  <div class="p4-terminal__bar">
+                    <span class="p4-dot p4-dot--a" aria-hidden="true"></span>
+                    <span class="p4-dot p4-dot--b" aria-hidden="true"></span>
+                    <span class="p4-dot p4-dot--c" aria-hidden="true"></span>
+                  <span class="p4-terminal__title">기술 스택</span>
+                  </div>
+                  <pre><span class="cm">// PL 역할 및 시스템 안정화</span>
+<span class="kw">-</span> <span class="fn">Spring Framework</span>
+<span class="kw">-</span> <span class="fn">Redis</span> (세션/캐싱)
+<span class="kw">-</span> <span class="fn">MySQL</span> (MariaDB)
+<span class="kw">-</span> <span class="fn">Code Review</span> (품질 관리)</pre>
+                </div>
+              </div>
+            </aside>
+
+            <div class="col-lg-8">
+              <div class="p4-panel p4-section">
+                <div class="p4-panel__body">
+                  <h2 class="p4-h2">프로젝트 개요</h2>
+                  <p class="p4-sublead">
+                    경산 지역 문화 행사 정보, 공모, 공연/전시 예약 및 알림을 제공하는 공식 플랫폼으로, 상이한 예약 모델을 동시에 구현하고 세션 안정성을 확보하여 운영 안정성을 달성했습니다.
+                  </p>
+                  <ul class="p4-timeline" aria-label="해결 흐름 타임라인">
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">PL (Project Leader) 역할 및 품질 관리</div>
+                        <div class="p4-step__tag">Management</div>
+                      </div>
+                      <p class="p4-step__desc">프로젝트 전반의 백엔드 개발 및 데이터 모델링을 담당함과 동시에, 3인 개발팀의 PL 역할을 수행하며 프로젝트 성공을 이끌었습니다. 공용 모듈 개발을 주도하고, 프로젝트 전체의 변수명 및 서비스 프로세스 통일화를 진행하여 협업 효율성 및 코드 가독성을 극대화했습니다. 업무 단위별 명확한 일정을 분배하고, 정기적인 코드 검토(Code Review)를 통해 개발 표준 준수와 품질 유지를 철저히 관리했습니다.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">상이한 예약 모델 동시 구현 및 유연한 운영 시스템 구축</div>
+                        <div class="p4-step__tag">Flexibility</div>
+                      </div>
+                      <p class="p4-step__desc">공통 모듈을 기반으로, 시설 대관 예약 등 상이한 비즈니스 요구사항을 충족하는 두 가지 예약 모델을 동시 구현. 예약 유형별로 차별화된 설정 관리 시스템을 백엔드에 구축하여, 관리자가 코드를 수정하지 않고도 복잡한 예약 로직을 유연하게 운영할 수 있도록 지원했습니다.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">외부 환경 세션 유지 난제 해결 및 안정성 확보</div>
+                        <div class="p4-step__tag">Stability</div>
+                      </div>
+                      <p class="p4-step__desc">네이버 앱 등 외부 앱 브라우저 환경에서 발생하는 간헐적인 세션 끊김 현상으로 예약이 실패하는 치명적인 문제를 해결. Redis를 도입하여 기존 Tomcat 세션 대신 중앙 집중식 세션 관리를 수행하도록 구조를 변경했습니다. 세션 안정성을 획기적으로 확보하여 모든 브라우저 환경에서 예약 프로세스의 무결성을 보장했습니다.</p>
+                    </li>
+                    <li>
+                      <div class="p4-step">
+                        <div class="p4-step__title">예측 기반 요구사항 대비 및 코드 유연성 확보</div>
+                        <div class="p4-step__tag">Architecture</div>
+                      </div>
+                      <p class="p4-step__desc">잦은 변동과 피드백이 예상된 예약 시스템 개발 시, 선제적인 유연성 확보에 집중했습니다. 비즈니스 로직 변화를 예측하여 모듈화를 극대화하고, 인터페이스 기반으로 코드를 설계하여 향후 요구사항 변경 시 최소한의 수정으로 기능을 확장할 수 있도록 대비했습니다.</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="p4-panel p4-section">
+                <div class="p4-panel__body">
+                  <h2 class="p4-h2">프로젝트를 통해 얻은 역량</h2>
+                  <ul class="list-check" style="margin:0;">
+                    <li><div><strong>기술적 난제 해결</strong><br><span class="text-muted-2">외부 앱 브라우저 환경에서 발생한 세션 문제를 Redis 도입으로 근본적으로 해결하며, 인프라 및 시스템 안정화 역량을 입증했습니다.</span></div></li>
+                    <li><div><strong>리딩 능력 및 품질 관리</strong><br><span class="text-muted-2">3인 팀 PL로서 개발 표준 확립 및 코드 검토를 통해 고품질 결과물을 달성하는 프로젝트 관리 역량을 입증했습니다.</span></div></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <h3>3. 예측 기반 요구사항 대비 및 코드 유연성 확보</h3>
-        <p>잦은 변동과 피드백이 예상된 예약 시스템 개발 시, <span class="highlight-pl">선제적인 유연성 확보</span>에 집중했습니다.</p>
-        <div class="solution-box">
-            <p><strong>[역할]</strong> 비즈니스 로직 변화를 예측하여 <strong>모듈화를 극대화</strong>하고, 인터페이스 기반으로 코드를 설계하여 향후 요구사항 변경 시 최소한의 수정으로 기능을 확장할 수 있도록 대비했습니다.</p>
-        </div>
-
-        <h2>주요 경험 및 역량</h2>
-        <ul>
-            <li><strong>기술적 난제 해결:</strong> 외부 앱 브라우저 환경에서 발생한 세션 문제를 <strong>Redis 도입</strong>으로 근본적으로 해결하며, 인프라 및 시스템 안정화 역량을 입증했습니다.</li>
-            <li><strong>리딩 능력 및 품질 관리:</strong> 3인 팀 PL로서 개발 표준 확립 및 <strong>코드 검토</strong>를 통해 고품질 결과물을 달성하는 <strong>프로젝트 관리 역량</strong>을 입증했습니다.</li>
-        </ul>
-
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
