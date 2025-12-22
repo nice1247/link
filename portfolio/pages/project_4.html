@@ -358,49 +358,82 @@
               </div>
             </div>
 
-            <div class="col-lg-5">
-              <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램">
-                <div class="p4-diagram__head">
-                  <div class="p4-diagram__title">System map</div>
-                  <div class="p4-diagram__meta">web / app / kiosk / signage</div>
-                </div>
-                <svg viewBox="0 0 520 280" role="img" aria-label="클라이언트-API-데이터베이스-실시간 채널 구조">
-                  <!-- 연결선 -->
-                  <line class="p4-svg-line" x1="160" y1="80" x2="280" y2="130"></line>
-                  <line class="p4-svg-line" x1="160" y1="140" x2="280" y2="150"></line>
-                  <line class="p4-svg-line" x1="160" y1="200" x2="280" y2="170"></line>
-                  <line class="p4-svg-line p4-svg-line--accent" x1="360" y1="150" x2="440" y2="100"></line>
-                  <line class="p4-svg-line" x1="360" y1="150" x2="440" y2="200"></line>
+<div class="col-lg-5">
+  <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램" style="background: #0f172a; padding: 25px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+    <div class="p4-diagram__head" style="margin-bottom: 20px; border-left: 4px solid #10b981; padding-left: 15px;">
+      <div class="p4-diagram__title" style="color: #f8fafc; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">System Map</div>
+      <div class="p4-diagram__meta" style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Web / App / Kiosk / Signage</div>
+    </div>
+    
+    <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        @keyframes flow { to { stroke-dashoffset: -20; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .node-rect { fill: #1e293b; stroke: #334155; stroke-width: 1.5; transition: 0.3s; }
+        .node-rect:hover { stroke: #10b981; fill: #064e3b; }
+        
+        .api-core { fill: #064e3b; stroke: #10b981; stroke-width: 2.5; filter: drop-shadow(0 0 8px rgba(16,185,129,0.3)); }
+        
+        .txt-main { fill: #f1f5f9; font-size: 13px; font-weight: 700; font-family: 'Pretendard', sans-serif; }
+        .txt-sub { fill: #64748b; font-size: 11px; font-family: 'Pretendard', sans-serif; }
+        
+        .path-line { 
+          fill: none; stroke: rgba(148, 163, 184, 0.2); stroke-width: 1.5; 
+          stroke-dasharray: 4, 4; animation: flow 1.2s linear infinite; 
+        }
+        .path-socket { 
+          stroke: #10b981; stroke-width: 2; 
+          stroke-dasharray: 6, 3; animation: flow 0.5s linear infinite; 
+        }
+      </style>
 
-                  <!-- 왼쪽: 클라이언트 -->
-                  <rect class="p4-svg-node" x="40" y="60" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="82" text-anchor="middle">WEB</text>
-                  <text class="p4-svg-sub" x="100" y="95" text-anchor="middle">예약/조회</text>
+      <path d="M 196 70 Q 220 70, 240 120" class="path-line" />
+      <path d="M 196 130 L 220 140" class="path-line" />
+      <path d="M 196 190 Q 220 190, 240 160" class="path-line" />
+      
+      <path d="M 356 130 Q 380 90, 396 90" class="path-socket" />
+      <path d="M 356 150 Q 380 180, 396 180" class="path-line" />
 
-                  <rect class="p4-svg-node" x="40" y="120" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="142" text-anchor="middle">APP</text>
-                  <text class="p4-svg-sub" x="100" y="155" text-anchor="middle">예약/인증</text>
+      <g transform="translate(44, 48)">
+        <rect class="node-rect" width="152" height="44" rx="12" />
+        <text class="txt-main" x="15" y="22" alignment-baseline="middle">WEB</text>
+        <text class="txt-sub" x="75" y="22" alignment-baseline="middle">예약/조회</text>
+      </g>
 
-                  <rect class="p4-svg-node" x="40" y="180" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="202" text-anchor="middle">KIOSK</text>
-                  <text class="p4-svg-sub" x="100" y="215" text-anchor="middle">현장</text>
+      <g transform="translate(44, 108)">
+        <rect class="node-rect" width="152" height="44" rx="12" />
+        <text class="txt-main" x="15" y="22" alignment-baseline="middle">APP</text>
+        <text class="txt-sub" x="75" y="22" alignment-baseline="middle">예약/인증</text>
+      </g>
 
-                  <!-- 중앙: API -->
-                  <rect class="p4-svg-node p4-svg-node--api" x="260" y="120" rx="12" ry="12" width="100" height="60"></rect>
-                  <text class="p4-svg-text" x="310" y="150" text-anchor="middle">API</text>
-                  <text class="p4-svg-sub" x="310" y="168" text-anchor="middle">정합성</text>
+      <g transform="translate(44, 168)">
+        <rect class="node-rect" width="152" height="44" rx="12" />
+        <text class="txt-main" x="15" y="22" alignment-baseline="middle">KIOSK</text>
+        <text class="txt-sub" x="85" y="22" alignment-baseline="middle">현장 키오스크</text>
+      </g>
 
-                  <!-- 오른쪽: 인프라 -->
-                  <rect class="p4-svg-node" x="420" y="80" rx="10" ry="10" width="80" height="40"></rect>
-                  <text class="p4-svg-text" x="460" y="102" text-anchor="middle">SOCKET</text>
-                  <text class="p4-svg-sub" x="460" y="115" text-anchor="middle">호출</text>
+      <g transform="translate(220, 108)">
+        <rect class="api-core" width="136" height="64" rx="32" />
+        <text class="txt-main" x="68" y="28" text-anchor="middle">Central API</text>
+        <text class="txt-sub" x="68" y="45" text-anchor="middle" style="fill:#10b981">데이터 정합성</text>
+        <circle cx="115" cy="20" r="4" fill="#10b981" style="animation: blink 1s infinite;" />
+      </g>
 
-                  <rect class="p4-svg-node" x="420" y="180" rx="10" ry="10" width="80" height="40"></rect>
-                  <text class="p4-svg-text" x="460" y="202" text-anchor="middle">DB</text>
-                  <text class="p4-svg-sub" x="460" y="215" text-anchor="middle">Cursor</text>
-                </svg>
-              </div>
-            </div>
+      <g transform="translate(396, 62)">
+        <rect class="node-rect" width="105" height="54" rx="12" />
+        <text class="txt-main" x="52" y="24" text-anchor="middle">SOCKET</text>
+        <text class="txt-sub" x="52" y="40" text-anchor="middle">실시간 호출</text>
+      </g>
+
+      <g transform="translate(396, 154)">
+        <rect class="node-rect" width="105" height="54" rx="12" />
+        <text class="txt-main" x="52" y="24" text-anchor="middle">Database</text>
+        <text class="txt-sub" x="52" y="40" text-anchor="middle">MySQL Cursor</text>
+      </g>
+    </svg>
+  </div>
+</div>
           </div>
         </div>
       </header>

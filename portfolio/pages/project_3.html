@@ -358,49 +358,82 @@
               </div>
             </div>
 
-            <div class="col-lg-5">
-              <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램">
-                <div class="p4-diagram__head">
-                  <div class="p4-diagram__title">System architecture</div>
-                  <div class="p4-diagram__meta">reservation / session / flexibility</div>
-                </div>
-                <svg viewBox="0 0 520 280" role="img" aria-label="예약-세션-유연성 구조">
-                  <!-- 연결선 -->
-                  <line class="p4-svg-line" x1="160" y1="80" x2="280" y2="130"></line>
-                  <line class="p4-svg-line" x1="160" y1="140" x2="280" y2="150"></line>
-                  <line class="p4-svg-line" x1="160" y1="200" x2="280" y2="170"></line>
-                  <line class="p4-svg-line p4-svg-line--accent" x1="360" y1="150" x2="440" y2="100"></line>
-                  <line class="p4-svg-line" x1="360" y1="150" x2="440" y2="200"></line>
+<div class="col-lg-5">
+  <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램" style="background: #0f172a; padding: 25px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+    <div class="p4-diagram__head" style="margin-bottom: 20px; border-left: 4px solid #6366f1; padding-left: 15px;">
+      <div class="p4-diagram__title" style="color: #f8fafc; font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;">System Architecture</div>
+      <div class="p4-diagram__meta" style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Reservation / Session / Flexibility</div>
+    </div>
+    
+    <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        @keyframes flowLine { to { stroke-dashoffset: -20; } }
+        @keyframes pulseRing { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.2); opacity: 0; } }
+        
+        .node-bg { fill: #1e293b; stroke: #334155; stroke-width: 1.5; transition: 0.3s; }
+        .node-bg:hover { stroke: #818cf8; fill: #1e1b4b; }
+        
+        .api-node { fill: #1e1b4b; stroke: #6366f1; stroke-width: 2.5; filter: drop-shadow(0 0 8px rgba(99,102,241,0.4)); }
+        
+        .main-text { fill: #f1f5f9; font-size: 13px; font-weight: 700; font-family: 'Pretendard', sans-serif; }
+        .sub-text { fill: #636e72; font-size: 11px; font-family: 'Pretendard', sans-serif; }
+        
+        .connector { 
+          fill: none; stroke: rgba(148, 163, 184, 0.3); stroke-width: 1.5; 
+          stroke-dasharray: 5, 3; animation: flowLine 1s linear infinite; 
+        }
+        .connector-accent { 
+          stroke: #6366f1; stroke-width: 2; 
+          stroke-dasharray: 8, 4; animation: flowLine 0.6s linear infinite; 
+        }
+      </style>
 
-                  <!-- 왼쪽: 기능 모듈 -->
-                  <rect class="p4-svg-node" x="40" y="60" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="82" text-anchor="middle">예약 모델</text>
-                  <text class="p4-svg-sub" x="100" y="95" text-anchor="middle">다중 구현</text>
+      <path d="M 196 70 Q 220 70, 240 120" class="connector" />
+      <path d="M 196 130 L 220 140" class="connector" />
+      <path d="M 196 190 Q 220 190, 240 160" class="connector" />
+      
+      <path d="M 356 130 Q 380 90, 396 90" class="connector-accent" />
+      <path d="M 356 150 Q 380 180, 396 180" class="connector" />
 
-                  <rect class="p4-svg-node" x="40" y="120" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="142" text-anchor="middle">Redis 세션</text>
-                  <text class="p4-svg-sub" x="100" y="155" text-anchor="middle">안정화</text>
+      <g transform="translate(44, 48)">
+        <rect class="node-bg" width="152" height="44" rx="12" />
+        <text class="main-text" x="15" y="22" alignment-baseline="middle">예약 모델</text>
+        <text class="sub-text" x="80" y="22" alignment-baseline="middle">다중 구현</text>
+      </g>
 
-                  <rect class="p4-svg-node" x="40" y="180" rx="10" ry="10" width="120" height="40"></rect>
-                  <text class="p4-svg-text" x="100" y="202" text-anchor="middle">모듈화</text>
-                  <text class="p4-svg-sub" x="100" y="215" text-anchor="middle">유연성</text>
+      <g transform="translate(44, 108)">
+        <rect class="node-bg" width="152" height="44" rx="12" />
+        <text class="main-text" x="15" y="22" alignment-baseline="middle">Redis 세션</text>
+        <text class="sub-text" x="85" y="22" alignment-baseline="middle">안정화</text>
+      </g>
 
-                  <!-- 중앙: API -->
-                  <rect class="p4-svg-node p4-svg-node--api" x="260" y="120" rx="12" ry="12" width="100" height="60"></rect>
-                  <text class="p4-svg-text" x="310" y="150" text-anchor="middle">API</text>
-                  <text class="p4-svg-sub" x="310" y="168" text-anchor="middle">무결성</text>
+      <g transform="translate(44, 168)">
+        <rect class="node-bg" width="152" height="44" rx="12" />
+        <text class="main-text" x="15" y="22" alignment-baseline="middle">모듈화</text>
+        <text class="sub-text" x="65" y="22" alignment-baseline="middle">유연성</text>
+      </g>
 
-                  <!-- 오른쪽: 인프라 -->
-                  <rect class="p4-svg-node" x="420" y="80" rx="10" ry="10" width="80" height="40"></rect>
-                  <text class="p4-svg-text" x="460" y="102" text-anchor="middle">PL</text>
-                  <text class="p4-svg-sub" x="460" y="115" text-anchor="middle">관리</text>
+      <g transform="translate(220, 108)">
+        <rect class="api-node" width="136" height="64" rx="14" />
+        <circle cx="68" cy="32" r="30" fill="none" stroke="#6366f1" stroke-width="1" style="transform-origin: 68px 32px; animation: pulseRing 2s infinite;" />
+        <text class="main-text" x="68" y="28" text-anchor="middle">API Interface</text>
+        <text class="sub-text" x="68" y="45" text-anchor="middle" style="fill:#818cf8">무결성 보장</text>
+      </g>
 
-                  <rect class="p4-svg-node" x="420" y="180" rx="10" ry="10" width="80" height="40"></rect>
-                  <text class="p4-svg-text" x="460" y="202" text-anchor="middle">DB</text>
-                  <text class="p4-svg-sub" x="460" y="215" text-anchor="middle">MySQL</text>
-                </svg>
-              </div>
-            </div>
+      <g transform="translate(396, 62)">
+        <rect class="node-bg" width="100" height="54" rx="12" />
+        <text class="main-text" x="50" y="24" text-anchor="middle">PL</text>
+        <text class="sub-text" x="50" y="40" text-anchor="middle">운영 관리</text>
+      </g>
+
+      <g transform="translate(396, 154)">
+        <rect class="node-bg" width="100" height="54" rx="12" />
+        <text class="main-text" x="50" y="24" text-anchor="middle">Database</text>
+        <text class="sub-text" x="50" y="40" text-anchor="middle">MySQL</text>
+      </g>
+    </svg>
+  </div>
+</div>
           </div>
         </div>
       </header>

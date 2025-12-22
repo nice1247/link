@@ -359,69 +359,112 @@
               </div>
             </div>
 
-            <div class="col-lg-5">
-              <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램">
-                <div class="p4-diagram__head">
-                  <div class="p4-diagram__title">System architecture</div>
-                  <div class="p4-diagram__meta">process / security / search</div>
-                </div>
-                <svg viewBox="0 0 600 320" role="img" aria-label="공모 프로세스-보안-검색 구조">
-                  <defs>
-                    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-                      <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,.20)" />
-                    </marker>
-                    <marker id="arrowhead-accent" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
-                      <polygon points="0 0, 8 3, 0 6" fill="rgba(53,242,255,.35)" />
-                    </marker>
-                  </defs>
+<div class="col-lg-5">
+  <div class="p4-diagram" aria-label="시스템 구성 요약 다이어그램" style="background: #111418; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div class="p4-diagram__head" style="margin-bottom: 25px; border-left: 4px solid #00cec9; padding-left: 15px;">
+      <div class="p4-diagram__title" style="color: #fff; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px;">System Architecture</div>
+      <div class="p4-diagram__meta" style="color: #666; font-size: 0.8rem; font-weight: 500;">Real-time Data Flow Infrastructure</div>
+    </div>
+    
+    <svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        @keyframes dash { to { stroke-dashoffset: -20; } }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        
+        .group-bg { fill: rgba(255, 255, 255, 0.02); stroke: rgba(255, 255, 255, 0.08); stroke-width: 1; }
+        .node-base { transition: all 0.3s; cursor: pointer; }
+        .node-base:hover { filter: brightness(1.2); }
+        
+        .node-biz { fill: #1e272e; stroke: #3498db; stroke-width: 1.5; }
+        .node-api { fill: #1e272e; stroke: #00cec9; stroke-width: 2; }
+        .node-infra { fill: #1e272e; stroke: #a29bfe; stroke-width: 1.5; }
+        
+        .text-main { fill: #ffffff; font-size: 13px; font-weight: 600; font-family: 'Pretendard', sans-serif; }
+        .text-sub { fill: #636e72; font-size: 10px; font-family: 'Pretendard', sans-serif; }
+        .label-group { fill: rgba(255,255,255,0.4); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* 애니메이션 라인 설정 */
+        .line-flow { 
+          stroke: rgba(255, 255, 255, 0.15); 
+          stroke-width: 1.5; 
+          fill: none; 
+          stroke-dasharray: 4, 2; 
+          animation: dash 1s linear infinite; 
+        }
+        .line-accent { 
+          stroke: #00cec9; 
+          stroke-width: 2; 
+          filter: drop-shadow(0 0 3px #00cec9);
+          animation: dash 0.5s linear infinite; 
+        }
+      </style>
 
-                  <!-- 그룹 영역 표시 -->
-                  <rect class="p4-svg-group" x="30" y="40" width="160" height="200" rx="8" ry="8"></rect>
-                  <text class="p4-svg-sub" x="35" y="35" font-weight="700">Business Layer</text>
+      <defs>
+        <marker id="arrow-blue" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#3498db" />
+        </marker>
+        <marker id="arrow-mint" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#00cec9" />
+        </marker>
+      </defs>
 
-                  <rect class="p4-svg-group" x="220" y="100" width="140" height="80" rx="8" ry="8"></rect>
-                  <text class="p4-svg-sub" x="225" y="95" font-weight="700">API Gateway</text>
+      <rect class="group-bg" x="20" y="40" width="180" height="290" rx="12" />
+      <text class="label-group" x="30" y="30">Business Layer</text>
+      
+      <g class="node-base" transform="translate(40, 60)">
+        <rect class="node-biz" width="140" height="60" rx="10" />
+        <text class="text-main" x="70" y="28" text-anchor="middle">공모 프로세스</text>
+        <text class="text-sub" x="70" y="45" text-anchor="middle">Process Architecture</text>
+      </g>
 
-                  <rect class="p4-svg-group" x="390" y="40" width="180" height="200" rx="8" ry="8"></rect>
-                  <text class="p4-svg-sub" x="395" y="35" font-weight="700">Infrastructure</text>
+      <g class="node-base" transform="translate(40, 155)">
+        <rect class="node-biz" width="140" height="60" rx="10" />
+        <text class="text-main" x="70" y="28" text-anchor="middle">보안 솔루션</text>
+        <text class="text-sub" x="70" y="45" text-anchor="middle">D'Amo 암복호화</text>
+      </g>
 
-                  <!-- 연결선 (화살표 포함) -->
-                  <line class="p4-svg-line" x1="190" y1="80" x2="220" y2="120" marker-end="url(#arrowhead)"></line>
-                  <line class="p4-svg-line" x1="190" y1="140" x2="220" y2="140" marker-end="url(#arrowhead)"></line>
-                  <line class="p4-svg-line" x1="190" y1="200" x2="220" y2="160" marker-end="url(#arrowhead)"></line>
-                  
-                  <line class="p4-svg-line p4-svg-line--accent" x1="360" y1="140" x2="390" y2="100" marker-end="url(#arrowhead-accent)"></line>
-                  <line class="p4-svg-line" x1="360" y1="140" x2="390" y2="200" marker-end="url(#arrowhead)"></line>
+      <g class="node-base" transform="translate(40, 250)">
+        <rect class="node-biz" width="140" height="60" rx="10" />
+        <text class="text-main" x="70" y="28" text-anchor="middle">통합 검색</text>
+        <text class="text-sub" x="70" y="45" text-anchor="middle">코난테크 연동</text>
+      </g>
 
-                  <!-- 왼쪽: 비즈니스 로직 계층 -->
-                  <rect class="p4-svg-node--service" x="50" y="60" rx="8" ry="8" width="120" height="50"></rect>
-                  <text class="p4-svg-text" x="110" y="82" text-anchor="middle">공모 프로세스</text>
-                  <text class="p4-svg-sub" x="110" y="98" text-anchor="middle">Process Architecture</text>
+      <text class="label-group" x="253" y="115" style="fill:#00cec9">Gateway</text>
+      <g class="node-base" transform="translate(250, 135)">
+        <rect class="node-api" width="100" height="100" rx="50" />
+        <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(0,206,201,0.2)" stroke-width="1">
+          <animate attributeName="r" from="40" to="48" dur="1.5s" repeatCount="indefinite" />
+          <animate attributeName="opacity" from="0.8" to="0" dur="1.5s" repeatCount="indefinite" />
+        </circle>
+        <text class="text-main" x="50" y="48" text-anchor="middle">API</text>
+        <text class="text-sub" x="50" y="65" text-anchor="middle">eGovFrame</text>
+      </g>
 
-                  <rect class="p4-svg-node--service" x="50" y="130" rx="8" ry="8" width="120" height="50"></rect>
-                  <text class="p4-svg-text" x="110" y="152" text-anchor="middle">보안 솔루션</text>
-                  <text class="p4-svg-sub" x="110" y="168" text-anchor="middle">D'Amo 암복호화</text>
+      <rect class="group-bg" x="400" y="40" width="180" height="290" rx="12" />
+      <text class="label-group" x="400" y="30">Infrastructure</text>
 
-                  <rect class="p4-svg-node--service" x="50" y="200" rx="8" ry="8" width="120" height="50"></rect>
-                  <text class="p4-svg-text" x="110" y="222" text-anchor="middle">통합 검색</text>
-                  <text class="p4-svg-sub" x="110" y="238" text-anchor="middle">코난테크 연동</text>
+      <g class="node-base" transform="translate(420, 80)">
+        <rect class="node-infra" width="140" height="60" rx="10" />
+        <text class="text-main" x="70" y="28" text-anchor="middle">외부 서비스</text>
+        <text class="text-sub" x="70" y="45" text-anchor="middle">알림톡 / SMS / Email</text>
+      </g>
 
-                  <!-- 중앙: API Gateway -->
-                  <rect class="p4-svg-node p4-svg-node--api" x="240" y="120" rx="10" ry="10" width="100" height="40"></rect>
-                  <text class="p4-svg-text" x="290" y="140" text-anchor="middle">API</text>
-                  <text class="p4-svg-sub" x="290" y="152" text-anchor="middle">eGovFrame</text>
+      <g class="node-base" transform="translate(420, 230)">
+        <rect class="node-infra" width="140" height="60" rx="10" />
+        <text class="text-main" x="70" y="28" text-anchor="middle">Database</text>
+        <text class="text-sub" x="70" y="45" text-anchor="middle">MS SQL Server</text>
+      </g>
 
-                  <!-- 오른쪽: 인프라 계층 -->
-                  <rect class="p4-svg-node" x="410" y="70" rx="8" ry="8" width="140" height="50"></rect>
-                  <text class="p4-svg-text" x="480" y="92" text-anchor="middle">외부 서비스</text>
-                  <text class="p4-svg-sub" x="480" y="108" text-anchor="middle">알림톡 / SMS / Email</text>
+      <path d="M 180 90 Q 220 90, 255 150" class="line-flow" marker-end="url(#arrow-blue)" />
+      <path d="M 180 185 L 245 185" class="line-flow" marker-end="url(#arrow-blue)" />
+      <path d="M 180 280 Q 220 280, 255 220" class="line-flow" marker-end="url(#arrow-blue)" />
+      
+      <path d="M 345 160 Q 380 110, 420 110" class="line-flow line-accent" marker-end="url(#arrow-mint)" />
+      <path d="M 345 210 Q 380 260, 420 260" class="line-flow" marker-end="url(#arrow-mint)" />
 
-                  <rect class="p4-svg-node" x="410" y="200" rx="8" ry="8" width="140" height="50"></rect>
-                  <text class="p4-svg-text" x="480" y="222" text-anchor="middle">Database</text>
-                  <text class="p4-svg-sub" x="480" y="238" text-anchor="middle">Microsoft SQL Server</text>
-                </svg>
-              </div>
-            </div>
+    </svg>
+  </div>
+</div>
           </div>
         </div>
       </header>
