@@ -368,9 +368,13 @@
     
     <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
       <style>
-        @keyframes flow { to { stroke-dashoffset: -24; } }
+        /* 흐름 애니메이션: 시작점에서 끝점 방향으로 전진 */
+        @keyframes flowForward {
+          from { stroke-dashoffset: 24; }
+          to { stroke-dashoffset: 0; }
+        }
+        
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-5px); } 100% { transform: translateY(0px); } }
         
         .p4-svg-node { fill: #1e293b; stroke: #334155; stroke-width: 1.5; transition: all 0.3s ease; }
         .p4-svg-node:hover { stroke: #38bdf8; fill: #0f172a; }
@@ -380,13 +384,14 @@
         .p4-svg-sub { fill: #64748b; font-size: 11px; font-family: 'Pretendard', sans-serif; }
         
         .p4-svg-line { 
-          fill: none; stroke: rgba(148, 163, 184, 0.2); stroke-width: 1.5; 
-          stroke-dasharray: 6, 2; animation: flow 1.5s linear infinite; 
+          fill: none; 
+          stroke: rgba(148, 163, 184, 0.3); 
+          stroke-width: 1.5; 
+          stroke-dasharray: 6, 2;
+          animation: flowForward 1.2s linear infinite; 
         }
-        .p4-svg-line--accent { 
-          stroke: #38bdf8; stroke-width: 2; 
-          stroke-dasharray: 8, 4; animation: flow 0.8s linear infinite; 
-        }
+        /* 우측으로 향하는 강조선 (필요 시 활용) */
+        .p4-svg-line--accent { stroke: rgba(56, 189, 248, 0.4); stroke-width: 2; }
       </style>
 
       <path d="M 196 70 Q 220 70, 240 120" class="p4-svg-line" />
@@ -401,13 +406,11 @@
         <text class="p4-svg-text" x="15" y="22" alignment-baseline="middle">QR 인증</text>
         <text class="p4-svg-sub" x="75" y="22" alignment-baseline="middle">마일리지 결제</text>
       </g>
-
       <g transform="translate(44, 108)">
         <rect class="p4-svg-node" width="152" height="44" rx="12" />
         <text class="p4-svg-text" x="15" y="22" alignment-baseline="middle">OTP 인증</text>
         <text class="p4-svg-sub" x="75" y="22" alignment-baseline="middle">보안 강화</text>
       </g>
-
       <g transform="translate(44, 168)">
         <rect class="p4-svg-node" width="152" height="44" rx="12" />
         <text class="p4-svg-text" x="15" y="22" alignment-baseline="middle">쿼리 최적화</text>
@@ -429,7 +432,6 @@
         <text class="p4-svg-text" x="55" y="24" text-anchor="middle">버전 관리</text>
         <text class="p4-svg-sub" x="55" y="40" text-anchor="middle">Update Flow</text>
       </g>
-
       <g transform="translate(396, 154)">
         <rect class="p4-svg-node" width="110" height="54" rx="12" />
         <text class="p4-svg-text" x="55" y="24" text-anchor="middle">Database</text>
